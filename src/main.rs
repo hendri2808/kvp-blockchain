@@ -24,7 +24,7 @@
  use std::collections::HashMap;
  use warp::{Filter, Reply};
  use tokio::sync::broadcast;
- use warp::ws::{Ws, WebSocket};
+ use warp::ws::{WebSocket};
  use warp::ws::Message as WsMessage;
  use std::sync::{Arc, Mutex};
  use futures::{StreamExt, SinkExt}; 
@@ -32,6 +32,7 @@
  use routes::{auth::user_routes, kyc::kyc_routes, admin::admin_routes};
  use crate::models::User;
  use crate::routes::kyc::with_user_db;
+ use warp::ws::Ws;
 
  // Database types
  type Db = Arc<Mutex<Vec<models::User>>>;
@@ -189,7 +190,22 @@
      println!("Server running at http://127.0.0.1:3030");
      warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
  }
- 
+
+// Tambahkan fungsi handle_rejection jika belum ada
+pub async fn handle_rejection(err: warp::Rejection) -> Result<impl warp::Reply, std::convert::Infallible> {
+    if let Some(_) = err.find::<crate::middleware::auth_middleware::Unauthorized>() {
+        Ok(warp::reply::with_status(
+            "Unauthorized access",
+            warp::http::StatusCode::UNAUTHORIZED,
+        ))
+    } else {
+        Ok(warp::reply::with_status(
+            "Internal Server Error",
+            warp::http::StatusCode::INTERNAL_SERVER_ERROR,
+        ))
+    }
+}
+
  // Inisialisasi Blockchain dan Network
  fn initialize_network(blockchain: &mut Blockchain, network: &mut Network, tx: &broadcast::Sender<String>) {
      // Daftarkan node

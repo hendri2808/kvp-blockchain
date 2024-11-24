@@ -16,6 +16,7 @@
  use std::collections::HashMap;
  use serde::{Deserialize};
  use crate::models::{KYCStatus, Db};
+ use crate::middleware::auth_middleware::admin_only_with_db;
  
  #[derive(Debug, Deserialize)]
  struct KycStatusUpdateRequest {
@@ -30,28 +31,31 @@
  }
  
  pub fn admin_routes(db: Db, reward_pool: Arc<Mutex<u64>>) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-     let approve_kyc = warp::path!("admin" / "kyc")
-         .and(warp::post())
-         .and(warp::body::json())
-         .and(with_db(db.clone()))
-         .and_then(approve_reject_kyc);
+    let approve_kyc = warp::path!("admin" / "kyc")
+        .and(warp::post())
+        .and(admin_only_with_db(db.clone(), "my_secret"))
+        .and(warp::body::json())
+        .and(with_db(db.clone()))
+        .and_then(|_user_id: String, body: KycStatusUpdateRequest, db: Db| async move {
+            approve_reject_kyc(body, db).await
+        });
+
+    let reward = warp::path!("admin" / "reward")
+        .and(warp::post())
+        .and(warp::body::json())
+        .and(with_reward_pool(reward_pool.clone()))
+        .and_then(update_reward_pool);
+
+    let stats = warp::path!("admin" / "stats")
+        .and(warp::get())
+        .and(with_db(db.clone()))
+        .and(with_reward_pool(reward_pool.clone()))
+        .and_then(get_admin_stats);
+
+    approve_kyc.or(reward).or(stats)
+}
  
-     let reward = warp::path!("admin" / "reward")
-         .and(warp::post())
-         .and(warp::body::json())
-         .and(with_reward_pool(reward_pool.clone()))
-         .and_then(update_reward_pool);
- 
-     let stats = warp::path!("admin" / "stats")
-         .and(warp::get())
-         .and(with_db(db.clone()))
-         .and(with_reward_pool(reward_pool.clone()))
-         .and_then(get_admin_stats);
- 
-     // Gabungkan semua route admin
-     approve_kyc.or(reward).or(stats)
- }
- 
+ // Fungsi untuk approve/reject KYC
  async fn approve_reject_kyc(body: KycStatusUpdateRequest, db: Db) -> Result<impl warp::Reply, warp::Rejection> {
     let mut db = db.lock().unwrap();
 

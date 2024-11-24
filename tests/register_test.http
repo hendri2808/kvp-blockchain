@@ -1,0 +1,9 @@
+# Register User
+POST http://127.0.0.1:3030/register
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "email": "admin@example.com",
+    "password": "1234567"
+}

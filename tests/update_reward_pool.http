@@ -1,0 +1,7 @@
+POST http://127.0.0.1:3030/admin/reward
+Content-Type: application/json
+
+{
+    "amount": 500,
+    "operation": "add"
+}

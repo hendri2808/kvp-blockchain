@@ -1,0 +1,1 @@
+# Ignore target directorytarget/# Ignore log files*.log# Ignore environment files.env# Ignore frontend node_modules directoryfrontend/node_modules/

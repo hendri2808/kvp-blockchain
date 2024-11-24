@@ -1,0 +1,8 @@
+POST http://127.0.0.1:3030/kyc
+Content-Type: application/json
+
+{
+    "user_id": "3f0843d5-b223-4748-b641-f685bbd1edd5",
+    "document_type": "passport or national id",
+    "document_path": "/path/to/document"
+}

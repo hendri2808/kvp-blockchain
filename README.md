@@ -1,7 +1,7 @@
 # KVP Blockchain Project
 
 ### Created from scratch by **Kraken (Hendri RH)** and **Bro CG**
-Progress November 24, 2024
+Progress November 26, 2024
 
 ---
 
@@ -78,6 +78,16 @@ This blockchain is built with Rust to ensure **high performance and reliability*
    - DeFi integration for staking, lending, and liquidity pools.
    - Game support via NFTs and token economies.
 
+### Completed Milestones 🚀🚀: 
+- Backend and frontend implementation for Blockchain Explorer.
+- Fully functional KYC automation system.
+- Hybrid consensus protocol design finalized.
+
+### Next Steps 🚀🚀:
+- Launch community channels (e.g., Telegram).
+- Finalize tokenomics driven by community engagement.
+- Expand network nodes and scalability testing.
+
 ---
 
 ## Progress Checklist 26 Nov 2024
@@ -102,12 +112,39 @@ This blockchain is built with Rust to ensure **high performance and reliability*
 
 ## Deployment Instructions
 
-1. **Backend**:
-   - Clone the repository and navigate to the backend directory.
-   - Run `cargo build` and `cargo run` to start the server.
-2. **Frontend**:
-   - Navigate to the frontend directory and install dependencies with `npm install`.
-   - Start the frontend server using `npm start`.
+1. **Prerequisites**:
+   - Docker
+   - Rust (version 1.75.0 or higher)
+   - Node.js
+
+2. **Setup Instructions**:
+   ```bash
+   # Clone the repository
+   git clone https://github.com/hendri2808/kvp-blockchain.git
+   cd kvp-blockchain
+
+   # Install dependencies
+   cargo build --release
+   ```
+
+3. **Run the Blockchain**:
+   ```bash
+   cargo run
+   ```
+
+4. **Run the Blockchain Explorer**:
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+---
+
+## Progress and History
+
+All updates and progress logs for this project are available in the [`progress and history`](progress%20and%20history) folder.
+
+- Latest Progress Report: [Progress_261124.pdf](progress%20and%20history/Progress_261124.pdf)
 
 ---
 
@@ -121,12 +158,13 @@ We welcome contributions! To get started:
 ---
 
 ## License
-All rights reserved © 2024 Kraken (Hendri RH) & Bro CG.
+
+This project is licensed under the [KVP Blockchain Custom License](License).
+
+For detailed terms and conditions, please refer to the [License](License) file located in the project directory.
 
 ---
 
 ## Contact
-For further inquiries, feel free to reach out via email:
-- **Kraken (Hendri RH)**: rahmathst99@gmail.com
-- **Bro CG**: Anonymous. Person who dont want anyome knows about him
-- **Our Profile**: https://krakenteam.netlify.app/
+For questions, suggestions, or contributions, feel free to reach out:
+- **Portofolio**: https://krakenteam.netlify.app/

@@ -11,19 +11,74 @@
  * All rights reserved © 2024 Kraken & Bro CG
  */
 
+ type UserDb = Arc<Mutex<Vec<User>>>;
+
+ mod models;
+ mod routes;
+ mod middleware;
+ mod utils;
+
  use sha2::{Digest, Sha256};
  use serde::{Serialize, Deserialize};
- use chrono::Utc;
+ use crate::utils::time::current_time_in_wib;
  use std::collections::HashMap;
- use warp::{Filter, Reply, cors};
+ use warp::{Filter, Reply};
  use tokio::sync::broadcast;
- use warp::ws::{Ws, WebSocket};
+ use warp::ws::{WebSocket};
  use warp::ws::Message as WsMessage;
  use std::sync::{Arc, Mutex};
  use futures::{StreamExt, SinkExt}; 
- 
+ use middleware::auth_middleware::jwt_auth;
+ use routes::{auth::user_routes, kyc::kyc_routes, admin::admin_routes};
+ use crate::models::User;
+ use crate::routes::kyc::with_user_db;
+ use warp::ws::Ws;
+
+ // Database types
+ type Db = Arc<Mutex<Vec<models::User>>>;
+ type KycDb = Arc<Mutex<Vec<models::KYCSubmission>>>;  
+
+ // Inisiaisasi semua Database Gabungan
  #[tokio::main]
  async fn main() {
+     // Inisialisasi database pengguna
+     let user_db: Db = Arc::new(Mutex::new(Vec::new()));
+
+     let auth_secret = "my_secret";
+
+     // Inisialisasi Dashboard
+     let dashboard_route = warp::path("dashboard")
+     .and(warp::get())
+     .and(jwt_auth(auth_secret)) // Middleware untuk validasi token
+     .and(with_user_db(user_db.clone()))
+     .map(|user_id: String, user_db: UserDb| {
+         let user_db = user_db.lock().unwrap();
+         if let Some(user) = user_db.iter().find(|u| u.id == user_id) {
+             warp::reply::json(user).into_response()
+         } else {
+             warp::reply::with_status("User not found", warp::http::StatusCode::NOT_FOUND).into_response()
+         }
+     }); 
+ 
+     // Inisialisasi database untuk reward pool
+     let reward_pool = Arc::new(Mutex::new(1000u64)); // Default 1000
+ 
+     // Inisialisasi database KYC
+     let kyc_db: KycDb = Arc::new(Mutex::new(Vec::new()));
+
+     // Routes for user authentication and KYC
+     let auth_routes = user_routes(user_db.clone());
+     let kyc_routes = kyc_routes(kyc_db.clone(), user_db.clone());
+     let admin_routes = admin_routes(user_db.clone(), reward_pool.clone());
+
+     // Sampel untuk Protect Routes
+     let _protected_kyc_routes = warp::path("protected_kyc")
+         .and(jwt_auth(auth_secret))
+         .and(warp::path::end())
+         .map(|user_id: String| {
+             format!("Access granted for user: {}", user_id)
+     });
+    
      // Setup channel untuk WebSocket broadcast
      let (tx, _rx) = broadcast::channel::<String>(100);
  
@@ -113,19 +168,44 @@
              warp::reply::json(&results)
          }
      });
+
+     // CORS Configuration
+     let cors = warp::cors()
+         .allow_any_origin()
+         .allow_methods(vec!["GET", "POST", "PUT", "DELETE"])
+         .allow_headers(vec!["Content-Type", "Authorization"]); // Tambahkan Authorization jika token digunakan
  
      // Gabungkan semua route
-     let routes = blockchain_route
+     let routes = auth_routes
+     .or(dashboard_route)
+     .or(kyc_routes)
+     .or(admin_routes)
+     .or(blockchain_route)
      .or(stats_route)
      .or(block_detail_route)
      .or(search_route)
      .or(ws_route)
-     .with(cors());
+     .with(cors);
  
      println!("Server running at http://127.0.0.1:3030");
      warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
  }
- 
+
+// Tambahkan fungsi handle_rejection jika belum ada
+pub async fn handle_rejection(err: warp::Rejection) -> Result<impl warp::Reply, std::convert::Infallible> {
+    if let Some(_) = err.find::<crate::middleware::auth_middleware::Unauthorized>() {
+        Ok(warp::reply::with_status(
+            "Unauthorized access",
+            warp::http::StatusCode::UNAUTHORIZED,
+        ))
+    } else {
+        Ok(warp::reply::with_status(
+            "Internal Server Error",
+            warp::http::StatusCode::INTERNAL_SERVER_ERROR,
+        ))
+    }
+}
+
  // Inisialisasi Blockchain dan Network
  fn initialize_network(blockchain: &mut Blockchain, network: &mut Network, tx: &broadcast::Sender<String>) {
      // Daftarkan node
@@ -285,7 +365,7 @@
  
          let genesis_block = Block::new(
              0,
-             Utc::now().timestamp_millis() as u128,
+             current_time_in_wib().timestamp_millis() as u128, // WIB timestamp,
              vec![genesis_transaction],
              "0".to_string(),
          );
@@ -299,7 +379,7 @@
          let last_block = self.chain.last().unwrap();
          let new_block = Block::new(
              last_block.index + 1,
-             Utc::now().timestamp_millis() as u128,
+             current_time_in_wib().timestamp_millis() as u128, // WIB timestamp,
              transactions,
              last_block.hash.clone(),
          );

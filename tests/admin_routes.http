@@ -1,0 +1,96 @@
+### Test Get Admin Stats
+GET http://127.0.0.1:3030/admin/stats
+Authorization: Bearer <your_admin_jwt_token>
+
+###
+
+### Test User Registration
+POST http://127.0.0.1:3030/register
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "email": "testuser@example.com",
+    "password": "123456789"
+}
+
+###
+
+###Test User Login
+POST http://127.0.0.1:3030/login
+Content-Type: application/json
+
+{
+    "username_or_email": "testuser",
+    "password": "123456789"
+}
+
+###
+
+### Submit KYC
+POST http://127.0.0.1:3030/kyc
+Content-Type: multipart/form-data
+Authorization: Bearer b3c2f04d-e7d1-4868-93c2-71a65790f307
+
+--boundary
+Content-Disposition: form-data; name="userId"
+
+b47d4a0d-0871-454c-84c6-b4ab962a0457
+--boundary
+Content-Disposition: form-data; name="docType"
+
+national id
+--boundary
+Content-Disposition: form-data; name="KTP"; filename="KTP.jpg"
+Content-Type: image/jpeg
+
+<binary file data>
+--boundary--
+
+###
+
+### Test Approve KYC
+POST http://127.0.0.1:3030/admin/kyc
+Authorization: Bearer <your_admin_jwt_token>
+Content-Type: application/json
+
+{
+  "user_id": "user123",
+  "status": "approved"
+}
+
+###
+
+### Test Reject KYC
+POST http://127.0.0.1:3030/admin/kyc
+Authorization: Bearer <your_admin_jwt_token>
+Content-Type: application/json
+
+{
+  "user_id": "user123",
+  "status": "rejected"
+}
+
+###
+
+### Test Update Reward Pool (Add)
+POST http://127.0.0.1:3030/admin/reward
+Authorization: Bearer <your_admin_jwt_token>
+Content-Type: application/json
+
+{
+  "amount": 500,
+  "operation": "add"
+}
+
+###
+
+### Test Update Reward Pool (Subtract)
+POST http://127.0.0.1:3030/admin/reward
+Authorization: Bearer <your_admin_jwt_token>
+Content-Type: application/json
+
+{
+  "amount": 200,
+  "operation": "subtract"
+}

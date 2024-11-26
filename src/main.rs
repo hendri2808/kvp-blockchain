@@ -46,6 +46,13 @@
 
      let auth_secret = "my_secret";
 
+     // Test Middleware
+     let test_middleware_route = warp::path("test_middleware")
+     .and(jwt_auth(auth_secret))
+     .map(|user_id: String| {
+         format!("Access granted for user: {}", user_id)
+     }); 
+
      // Inisialisasi Dashboard
      let dashboard_route = warp::path("dashboard")
      .and(warp::get())
@@ -177,6 +184,7 @@
  
      // Gabungkan semua route
      let routes = auth_routes
+     .or(test_middleware_route)
      .or(dashboard_route)
      .or(kyc_routes)
      .or(admin_routes)

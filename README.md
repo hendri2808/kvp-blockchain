@@ -42,7 +42,7 @@ This blockchain is built with Rust to ensure **high performance and reliability*
 
 ---
 
-## Pending Tasks
+## Pending Tasks [■■■□□□□□□□] 30% Loading...
 ### Backend Development
 - **Dashboard Admin**:
   - Approval KYC: Auto-handled except in special cases.

@@ -80,22 +80,23 @@ This blockchain is built with Rust to ensure **high performance and reliability*
 
 ---
 
-## Progress Checklist
+## Progress Checklist 26 Nov 2024
 
-| **No** | **Feature/Task**                                | **Description**                                                             | **Status**    |
-|--------|-------------------------------------------------|-----------------------------------------------------------------------------|---------------|
-| 1      | KVP Protocol Design                             | Design unique protocol with Proof of Contribution and governance mechanisms | ✅ Completed  |
-| 2      | Basic Blockchain and Explorer                   | Initial blockchain functionalities and explorer features                    | ✅ Completed  |
-| 3      | User Authentication                             | Secure login and registration                                               | ✅ Completed  |
-| 4      | KYC Automation                                  | Automated document validation using OCR                                     | ✅ Completed  |
-| 5      | Admin Dashboard                                 | Approval KYC, reward pool management, reset passwords, and statistics       | ⬜ Pending     |
-| 6      | User Dashboard                                  | KYC Explorer, mining interface, wallet system                               | ⬜ Pending     |
-| 7      | CI/CD Pipeline                                  | Automate deployment with GitHub Actions                                     | ⬜ Pending     |
-| 8      | Monitoring and Logging                          | Real-time system monitoring and logging                                     | ⬜ Pending     |
-| 9      | Advanced Filtering                              | Add advanced filters for explorer                                           | ⬜ Pending     |
-| 10     | Dynamic KYC Explorer                            | Country-specific KYC forms with document validation                         | ⬜ Pending     |
-| 11     | Wallet System                                   | Store and transact coins within the blockchain                              | ⬜ Pending     |
-| 12     | DeFi and Game Integration                       | Staking, lending, NFTs, and token economy                                   | ⬜ Pending     |
+| **No** | **Feature/Task**                                | **Description**                                                             | **Status**    					|
+|--------|-------------------------------------------------|-----------------------------------------------------------------------------|----------------------------------|
+| 1      | KVP Protocol Design                             | Design unique protocol with Proof of Contribution and governance mechanisms | ✅ Completed  					|
+| 2      | Basic Blockchain and Explorer                   | Initial blockchain functionalities and explorer features                    | ✅ Completed  					|
+| 3      | User Authentication                             | Secure login and registration                                               | ✅ Completed  					|
+| 4      | KYC Automation                                  | Automated document validation using OCR                                     | [■■■■■■■□□□] 70% Loading...     	|
+|        |                                                 | ....Doing Backend Work....                                                  | 🚀 Progress   					|
+| 5      | Admin Dashboard                                 | Approval KYC, reward pool management, reset passwords, and statistics       | ⏳ Waiting     					|
+| 6      | User Dashboard                                  | KYC Explorer, mining interface, wallet system                               | ⏳ Waiting      					|
+| 7      | CI/CD Pipeline                                  | Automate deployment with GitHub Actions                                     | ⏳ Waiting      					|
+| 8      | Monitoring and Logging                          | Real-time system monitoring and logging                                     | ⏳ Waiting     					|
+| 9      | Advanced Filtering                              | Add advanced filters for explorer                                           | ⏳ Waiting      					|
+| 10     | Dynamic KYC Explorer                            | Country-specific KYC forms with document validation                         | ⏳ Waiting     					|
+| 11     | Wallet System                                   | Store and transact coins within the blockchain                              | ⏳ Waiting      					|
+| 12     | DeFi and Game Integration                       | Staking, lending, NFTs, and token economy                                   | ⏳ Waiting     					|
 
 ---
 

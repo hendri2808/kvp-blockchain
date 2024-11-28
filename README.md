@@ -176,6 +176,10 @@ All updates and progress logs for this project are available in the [`progress a
 
 - Latest Progress Report: [Progress_281124.pdf](progress%20and%20history/Progress_281124.pdf)
 
+You also can find FAQ Document inside [`progress and history`](progress%20and%20history) folder. It will answer about comparison between KVP and some of Blockchain. The question comes from General Community for Crypto and Telegram.
+
+- The document for FAQ : [FAQ - Comparison of KVP Blockchain with EVM (Ethereum) and Stellar.pdf](progress%20and%20history/FAQ - Comparison of KVP Blockchain with EVM (Ethereum) and Stellar.pdf)
+
 ---
 
 ## Contributing

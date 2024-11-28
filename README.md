@@ -42,7 +42,11 @@ This blockchain is built with Rust to ensure **high performance and reliability*
 
 ---
 
-## Pending Tasks [■■■□□□□□□□] 30% Loading...
+## Pending Tasks [■■■■■■□□□□□] 60% Loading...
+### Database PostgreSQL (Update on Nov28th, 2024)
+- [x] Finish all foundation database for implementation Core Blockchain Layer, User Management (Admin and user), Reward Pool Management (mining and reward pool), GameFi, NFT Marketplace, DAO Governance, Statistik dan Audit, & Backup dan Restore
+- [x] Finalize and going to Backend (using Rust intregation)
+
 ### Backend Development
 - **Dashboard Admin**:
   - Approval KYC: Auto-handled except in special cases.
@@ -144,7 +148,7 @@ This blockchain is built with Rust to ensure **high performance and reliability*
 
 All updates and progress logs for this project are available in the [`progress and history`](progress%20and%20history) folder.
 
-- Latest Progress Report: [Progress_261124.pdf](progress%20and%20history/Progress_261124.pdf)
+- Latest Progress Report: [Progress_281124.pdf](progress%20and%20history/Progress_281124.pdf)
 
 ---
 

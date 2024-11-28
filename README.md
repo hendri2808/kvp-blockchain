@@ -1,11 +1,13 @@
 # KVP Blockchain Project
 
 ### Created from scratch by **Kraken (Hendri RH)** and **Bro CG**
-Progress November 26, 2024
+Progress November 28, 2024
 
 ---
 
 ## Project Overview
+
+Blockchain is a decentralized technology used to record transactions securely and transparently. KVP Blockchain, EVM (Ethereum), and Stellar are three distinct blockchain platforms, each with its unique characteristics and use cases. In this document, we will compare KVP Blockchain with EVM and Stellar, focusing on the key differences in architecture, consensus mechanisms, and integration capabilities.
 
 The KVP Blockchain is a groundbreaking blockchain solution focused on:
 - **Lightweight and efficient design**: Designed to run efficiently on both high-performance and lightweight devices.
@@ -13,6 +15,30 @@ The KVP Blockchain is a groundbreaking blockchain solution focused on:
 - **Environmentally friendly and resource-optimized mechanisms**: Aiming to minimize energy consumption and computational demands.
 
 This blockchain is built with Rust to ensure **high performance and reliability**.
+
+---
+
+# Comparison of KVP Blockchain with EVM (Ethereum) and Stellar
+
+## 1. Characteristics of KVP Blockchain
+
+KVP Blockchain is a blockchain built from scratch with a focus on efficiency and scalability. Using a unique consensus protocol and supporting Web3 applications, DeFi, NFTs, and GameFi, KVP is designed to meet the needs of fast transactions and low costs. KVP also allows lightweight nodes to participate without requiring expensive hardware.
+
+## 2. Comparison with EVM and Stellar
+
+| **Aspect**               | **KVP Blockchain**                              | **EVM (Ethereum)**                                  | **Stellar**                                          |
+|--------------------------|-------------------------------------------------|----------------------------------------------------|------------------------------------------------------|
+| **Primary Purpose**       | Lightweight and efficient blockchain for Web3, DeFi, NFT, and GameFi applications | General-purpose blockchain for smart contracts and decentralized applications (dApps) | Payment network for fast and cheap transactions between individuals or institutions |
+| **Consensus Mechanism**   | Hybrid consensus protocol (PoC+PoA, PoC+PoS, or PoC+PoW) | Proof of Stake (PoS) and Proof of Work (PoW) | Stellar Consensus Protocol (SCP) |
+| **Scalability**           | Designed for scalable applications with lightweight node participation | Scalability is limited, with gas fees rising during periods of transaction congestion | Highly efficient for microtransactions, supporting transactions in seconds |
+| **Transaction Speed**     | Fast transactions with low costs | Transaction speed depends on network and gas fees | Very fast transactions, typically seconds per transaction |
+| **Smart Contracts**       | Supports smart contracts for DeFi and NFT applications | Supports smart contracts with Solidity | Supports smart contracts using Stellar Smart Contracts (SSC) |
+| **Common Use Cases**      | Web3 applications, DeFi, NFT, and GameFi | Decentralized applications, DeFi, and token use cases | Global payments, cross-border money transfers, and microtransaction applications |
+| **Community and Adoption**| Growing community | One of the largest blockchains with a vibrant community and large adoption | Used by financial institutions, with partnerships with major organizations |
+
+## 3. Conclusion
+
+KVP Blockchain, EVM, and Stellar each have their strengths in the blockchain world. KVP Blockchain stands out with its efficient design, ideal for applications requiring speed and low cost, especially in Web3, DeFi, and GameFi sectors. Meanwhile, EVM has greater adoption with a rich ecosystem focused on decentralized applications and smart contracts, and Stellar is more focused on microtransactions and cross-border payments with very low fees.
 
 ---
 

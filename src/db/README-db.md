@@ -5,7 +5,6 @@ This document outlines the database structure for the KVP Blockchain project, co
 ## **DATA POSTGRESQL kvp_blockchain**
 kvp_blockchain=# -- Menampilkan struktur tabel tertentu
 kvp_blockchain=# \d+ transactions;
-
                                                                             Table "public.transactions"
                                                                             
 |      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compression | Stats target | Description |
@@ -70,7 +69,9 @@ Access method: heap
 
 
 kvp_blockchain=# \d+ blocks;
+
                                                                           Table "public.blocks"
+                                                                          
 |      Column       |            Type             | Collation | Nullable |                 Default                  | Storage  | Compression | Stats target | Description |
 |-------------------|-----------------------------|-----------|----------|------------------------------------------|----------|-------------|--------------|-------------|
 | block_id          | integer                     |           | not null | nextval('blocks_block_id_seq'::regclass) | plain    |             |         | |
@@ -94,23 +95,27 @@ kvp_blockchain=# \d+ blocks;
 | burned_block_ids  | text[]                      |           |          |                                          | extended |             |         | |
 
 Indexes:
+
     "blocks_pkey" PRIMARY KEY, btree (block_id)
     "blocks_block_hash_key" UNIQUE CONSTRAINT, btree (block_hash)
+    
 Referenced by:
+
     TABLE "transactions" CONSTRAINT "fk_block_id" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
     TABLE "mining_rewards" CONSTRAINT "mining_rewards_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
     TABLE "transactions" CONSTRAINT "transactions_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+    
 Triggers:
+
     trigger_update_block_stats AFTER INSERT ON blocks FOR EACH ROW EXECUTE FUNCTION update_block_stats()
+    
 Access method: heap
 
 
-kvp_blockchain=# acker;
-ERROR:  syntax error at or near "acker"
-LINE 1: acker;
-        ^
 kvp_blockchain=# \d+ cloud;
+
                                                                   Table "public.cloud"
+                                                                  
 |   Column   |           Type           | Collation | Nullable |              Default              | Storage  | Compression | Stats target | Description |
 |------------|--------------------------|-----------|----------|-----------------------------------|----------|-------------|--------------|-------------|
 | id         | integer                  |           | not null | nextval('cloud_id_seq'::regclass) | plain    |             |              | |
@@ -121,16 +126,22 @@ kvp_blockchain=# \d+ cloud;
 | updated_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                 | plain    |             |              | |
 
 Indexes:
+
     "cloud_pkey" PRIMARY KEY, btree (id)
+    
 Referenced by:
+
     TABLE "mirror" CONSTRAINT "mirror_cloud_id_fkey" FOREIGN KEY (cloud_id) REFERENCES cloud(id) ON DELETE CASCADE
     TABLE "peer" CONSTRAINT "peer_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
     TABLE "seeder" CONSTRAINT "seeder_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ mirror;
+
                                                                   Table "public.mirror"
+                                                                  
 |   Column    |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Description |
 |-------------|--------------------------|-----------|----------|------------------------------------|----------|-------------|--------------|-------------|
 | id          | integer                  |           | not null | nextval('mirror_id_seq'::regclass) | plain    |             |              | |
@@ -146,7 +157,9 @@ Access method: heap
 
 
 kvp_blockchain=# \d+ seeder;
+
                                                                   Table "public.seeder"
+                                                                  
 |   Column   |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Description |
 |------------|--------------------------|-----------|----------|------------------------------------|----------|-------------|--------------|-------------|
 | id         | integer                  |           | not null | nextval('seeder_id_seq'::regclass) | plain    |             |              | |
@@ -156,15 +169,21 @@ kvp_blockchain=# \d+ seeder;
 | created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              | |
 
 Indexes:
+
     "seeder_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "seeder_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
     "seeder_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ peer;
+
                                                                   Table "public.peer"
+                                                                  
 |   Column   |           Type           | Collation | Nullable |             Default              | Storage  | Compression | Stats target | Description |
 |------------|--------------------------|-----------|----------|----------------------------------|----------|-------------|--------------|-------------|
 | id         | integer                  |           | not null | nextval('peer_id_seq'::regclass) | plain    |             |              | |
@@ -174,17 +193,25 @@ kvp_blockchain=# \d+ peer;
 | created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                | plain    |             |              | |
 
 Indexes:
+
     "peer_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "peer_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
     "peer_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    
 Triggers:
+
     peer_status_update AFTER UPDATE ON peer FOR EACH ROW EXECUTE FUNCTION update_peer_status()
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ channel;
+
                                                                    Table "public.channel"
+                                                                   
 |    Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description |
 |--------------|--------------------------|-----------|----------|-------------------------------------|----------|-------------|--------------|-------------|
 | id           | integer                  |           | not null | nextval('channel_id_seq'::regclass) | plain    |             |              | |
@@ -193,14 +220,20 @@ kvp_blockchain=# \d+ channel;
 | created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              | |
 
 Indexes:
+
     "channel_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "channel_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ dns;
+
                                                                   Table "public.dns"
+                                                                  
 |   Column    |           Type           | Collation | Nullable |             Default             | Storage  | Compression | Stats target | Description |
 |-------------|--------------------------|-----------|----------|---------------------------------|----------|-------------|--------------|-------------|
 | id          | integer                  |           | not null | nextval('dns_id_seq'::regclass) | plain    |             |              | |
@@ -209,12 +242,16 @@ kvp_blockchain=# \d+ dns;
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP               | plain    |             |              | |
 
 Indexes:
+
     "dns_pkey" PRIMARY KEY, btree (id)
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ bandwidth;
+
                                                                     Table "public.bandwidth"
+                                                                    
 |     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target | Description |
 |-----------------|--------------------------|-----------|----------|---------------------------------------|---------|-------------|--------------|-------------|
 | id              | integer                  |           | not null | nextval('bandwidth_id_seq'::regclass) | plain   |             | | |
@@ -224,16 +261,24 @@ kvp_blockchain=# \d+ bandwidth;
 | created_at      | timestamp with time zone |           |          | CURRENT_TIMESTAMP                     | plain   |             | | |
 
 Indexes:
+
     "bandwidth_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "bandwidth_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    
 Triggers:
+
     update_bandwidth_usage_trigger AFTER INSERT ON bandwidth FOR EACH ROW EXECUTE FUNCTION update_bandwidth_usage()
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ gateway;
+
                                                                   Table "public.gateway"
+                                                                  
 |   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description |
 |-------------|--------------------------|-----------|----------|-------------------------------------|----------|-------------|--------------|-------------|
 | id          | integer                  |           | not null | nextval('gateway_id_seq'::regclass) | plain    |             |              | |
@@ -242,27 +287,39 @@ kvp_blockchain=# \d+ gateway;
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              | |
 
 Indexes:
+
     "gateway_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "gateway_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    
 Triggers:
+
     update_gateway_share_trigger AFTER INSERT ON gateway FOR EACH ROW EXECUTE FUNCTION update_gateway_share()
+    
 Access method: heap
 
 
 kvp_blockchain=# \d+ __diesel_schema_migrations;
+
                                                Table "public.__diesel_schema_migrations"
+                                               
 | Column  |            Type             | Collation | Nullable |      Default      | Storage  | Compression | Stats target | Description |
 |---------|-----------------------------|-----------|----------|-------------------|----------|-------------|--------------|-------------|
 | version | character varying(50)       |           | not null |                   | extended |             |              | |
 | run_on  | timestamp without time zone |           | not null | CURRENT_TIMESTAMP | plain    |             |              | |
 
 Indexes:
+
     "__diesel_schema_migrations_pkey" PRIMARY KEY, btree (version)
+    
 Access method: heap
 
 kvp_blockchain=# \df
+
                                                       List of functions
+                                                      
 | Schema |           Name           | Result data type |                      Argument data types                      | Type |
 |--------|--------------------------|------------------|---------------------------------------------------------------|------|
 | public | add_peer                 | void             | user_id integer, file_id integer                              | func |
@@ -278,18 +335,24 @@ kvp_blockchain=# \df
 | public | update_peer_status       | trigger          |                                                               | func |
 | public | verify_kyc_automatically | trigger          |                                                               | func |
 | public | verify_kyc_automatically | void             | user_id integer                                               | func |
+
 (13 rows)
 
 
 kvp_blockchain=# \dy
+
               List of event triggers
+              
 | Name | Event | Owner | Enabled | Function | Tags |
 |------|-------|-------|---------|----------|------|
 | | | | | | |
+
 (0 rows)
 
 kvp_blockchain=# \di
+
                                      List of relations
+                                     
 | Schema |               Name                | Type  |  Owner   |           Table            |
 |--------|-----------------------------------|-------|----------|----------------------------|
 | public | __diesel_schema_migrations_pkey   | index | postgres | __diesel_schema_migrations |
@@ -328,10 +391,13 @@ kvp_blockchain=# \di
 | public | users_pkey                        | index | postgres | users |
 | public | users_username_key                | index | postgres | users |
 | public | votes_pkey                        | index | postgres | votes |
+
 (36 rows)
 
 kvp_blockchain=# \di
+
                                      List of relations
+                                     
 | Schema |               Name                | Type  |  Owner   |           Table            |
 |--------|-----------------------------------|-------|----------|----------------------------|
 | public | __diesel_schema_migrations_pkey   | index | postgres | __diesel_schema_migrations |
@@ -370,17 +436,24 @@ kvp_blockchain=# \di
 | public | users_pkey                        | index | postgres | users |
 | public | users_username_key                | index | postgres | users |
 | public | votes_pkey                        | index | postgres | votes |
+
 (36 rows)
 
 
 kvp_blockchain=# \dn
+
       List of schemas
+      
 |  Name  |       Owner       |
 |--------|-------------------|
 | public | pg_database_owner |
+
 (1 row)
 
+---
+
 ## **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**
+
 src/ 
 ├── blockchain/  ✅
 │ ├── mod.rs ✅

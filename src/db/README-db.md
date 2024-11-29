@@ -2,225 +2,464 @@ This document outlines the database structure for the KVP Blockchain project, co
 
 ---
 
-## **1. Core Blockchain Layer**
-### Tujuan:
-- Menyimpan blok dan transaksi pada blockchain.
-- Mendukung fitur mining dan validasi blok.
+## **DATA POSTGRESQL kvp_blockchain**
+kvp_blockchain=# -- Menampilkan struktur tabel tertentu
+kvp_blockchain=# \d+ transactions;
+                                                                            Table "public.transactions"
+      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compres
+sion | Stats target | Description
+------------------+-----------------------------+-----------+----------+------------------------------------------------------+----------+--------
+-----+--------------+-------------
+ transaction_id   | integer                     |           | not null | nextval('transactions_transaction_id_seq'::regclass) | plain    |
+     |              |
+ transaction_hash | text                        |           | not null |                                                      | extended |
+     |              |
+ block_id         | integer                     |           |          |                                                      | plain    |
+     |              |
+ sender           | text                        |           |          |                                                      | extended |
+     |              |
+ receiver         | text                        |           |          |                                                      | extended |
+     |              |
+ amount           | numeric(20,8)               |           |          |                                                      | main     |
+     |              |
+ signature        | text                        |           |          |                                                      | extended |
+     |              |
+ created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP                                    | plain    |
+     |              |
+ user_id          | integer                     |           |          |                                                      | plain    |
+     |              |
+ sender_id        | integer                     |           |          |                                                      | plain    |
+     |              |
+ receiver_id      | integer                     |           |          |                                                      | plain    |
+     |              |
+Indexes:
+    "transactions_pkey" PRIMARY KEY, btree (transaction_id)
+    "idx_block_id" btree (block_id)
+    "idx_user_id" btree (user_id)
+    "transactions_transaction_hash_key" UNIQUE CONSTRAINT, btree (transaction_hash)
+Foreign-key constraints:
+    "fk_block_id" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+    "fk_receiver" FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE
+    "fk_receiver_id" FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE SET NULL
+    "fk_sender" FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE
+    "fk_sender_id" FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE SET NULL
+    "fk_user_id" FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    "transactions_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+Access method: heap
 
-### Tabel:
-1. **blocks**
-   - id (Primary Key)
-   - block_hash (Unique)
-   - previous_hash
-   - timestamp
-   - data (JSONB)
-   - nonce
-   - created_at
 
-2. **transactions**
-   - id (Primary Key)
-   - transaction_hash (Unique)
-   - block_id (Foreign Key -> blocks.id)
-   - sender (wallet_address)
-   - receiver (wallet_address)
-   - amount (DECIMAL)
-   - signature (text)
-   - created_at
+kvp_blockchain=# \d+ admin;
+                                                                        Table "public.admin"
+    Column     |            Type             | Collation | Nullable |                 Default                 | Storage  | Compression | Stats tar
+get | Description
+---------------+-----------------------------+-----------+----------+-----------------------------------------+----------+-------------+----------
+----+-------------
+ admin_id      | integer                     |           | not null | nextval('admin_admin_id_seq'::regclass) | plain    |             |
+    |
+ username      | character varying(50)       |           | not null |                                         | extended |             |
+    |
+ password_hash | text                        |           | not null |                                         | extended |             |
+    |
+ email         | character varying(100)      |           | not null |                                         | extended |             |
+    |
+ role          | character varying(20)       |           |          | 'admin'::character varying              | extended |             |
+    |
+ created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                       | plain    |             |
+    |
+Indexes:
+    "admin_pkey" PRIMARY KEY, btree (admin_id)
+    "admin_email_key" UNIQUE CONSTRAINT, btree (email)
+    "admin_username_key" UNIQUE CONSTRAINT, btree (username)
+Referenced by:
+    TABLE "kyc_submissions" CONSTRAINT "fk_reviewed_by_admin" FOREIGN KEY (reviewed_by) REFERENCES admin(admin_id) ON DELETE SET NULL
+    TABLE "kyc_approvals" CONSTRAINT "kyc_approvals_admin_id_fkey" FOREIGN KEY (admin_id) REFERENCES admin(admin_id)
+Access method: heap
 
----
 
-## **2. User and Access Management**
-### Tujuan:
-- Mengelola pengguna (admin dan user).
-- Menyediakan keamanan akses melalui KYC dan autentikasi.
+kvp_blockchain=# \d+ blocks;
+                                                                          Table "public.blocks"
+      Column       |            Type             | Collation | Nullable |                 Default                  | Storage  | Compression | Stat
+s target | Description
+-------------------+-----------------------------+-----------+----------+------------------------------------------+----------+-------------+-----
+---------+-------------
+ block_id          | integer                     |           | not null | nextval('blocks_block_id_seq'::regclass) | plain    |             |
+         |
+ block_hash        | text                        |           | not null |                                          | extended |             |
+         |
+ previous_hash     | text                        |           |          |                                          | extended |             |
+         |
+ timestamp         | timestamp without time zone |           |          | CURRENT_TIMESTAMP                        | plain    |             |
+         |
+ data              | jsonb                       |           |          |                                          | extended |             |
+         |
+ nonce             | integer                     |           |          |                                          | plain    |             |
+         |
+ created_at        | timestamp without time zone |           |          | CURRENT_TIMESTAMP                        | plain    |             |
+         |
+ transactions      | jsonb                       |           |          |                                          | extended |             |
+         |
+ total_blocks      | integer                     |           | not null | 0                                        | plain    |             |
+         |
+ active_blocks     | integer                     |           | not null | 0                                        | plain    |             |
+         |
+ inactive_blocks   | integer                     |           | not null | 0                                        | plain    |             |
+         |
+ burned_blocks     | integer                     |           |          | 0                                        | plain    |             |
+         |
+ remaining_blocks  | integer                     |           | not null | 0                                        | plain    |             |
+         |
+ halving_schedule  | timestamp without time zone |           |          |                                          | plain    |             |
+         |
+ last_block_time   | timestamp without time zone |           |          |                                          | plain    |             |
+         |
+ next_halving_time | timestamp without time zone |           |          |                                          | plain    |             |
+         |
+ last_burn_time    | timestamp without time zone |           |          |                                          | plain    |             |
+         |
+ burned            | boolean                     |           |          | false                                    | plain    |             |
+         |
+ burned_block_ids  | text[]                      |           |          |                                          | extended |             |
+         |
+Indexes:
+    "blocks_pkey" PRIMARY KEY, btree (block_id)
+    "blocks_block_hash_key" UNIQUE CONSTRAINT, btree (block_hash)
+Referenced by:
+    TABLE "transactions" CONSTRAINT "fk_block_id" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+    TABLE "mining_rewards" CONSTRAINT "mining_rewards_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+    TABLE "transactions" CONSTRAINT "transactions_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+Triggers:
+    trigger_update_block_stats AFTER INSERT ON blocks FOR EACH ROW EXECUTE FUNCTION update_block_stats()
+Access method: heap
 
-### Tabel:
-1. **admin**
-   - admin_id (Primary Key)
-   - username
-   - password
-   - created_at
 
-2. **users**
-   - user_id (Primary Key)
-   - username
-   - password
-   - email
-   - wallet_address (Unique)
-   - created_at
+kvp_blockchain=# acker;
+ERROR:  syntax error at or near "acker"
+LINE 1: acker;
+        ^
+kvp_blockchain=# \d+ cloud;
+                                                                  Table "public.cloud"
+   Column   |           Type           | Collation | Nullable |              Default              | Storage  | Compression | Stats target | Descri
+ption
+------------+--------------------------+-----------+----------+-----------------------------------+----------+-------------+--------------+-------
+------
+ id         | integer                  |           | not null | nextval('cloud_id_seq'::regclass) | plain    |             |              |
+ file_path  | character varying(255)   |           | not null |                                   | extended |             |              |
+ size       | bigint                   |           | not null |                                   | plain    |             |              |
+ status     | character varying(50)    |           |          | 'active'::character varying       | extended |             |              |
+ created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                 | plain    |             |              |
+ updated_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                 | plain    |             |              |
+Indexes:
+    "cloud_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "mirror" CONSTRAINT "mirror_cloud_id_fkey" FOREIGN KEY (cloud_id) REFERENCES cloud(id) ON DELETE CASCADE
+    TABLE "peer" CONSTRAINT "peer_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
+    TABLE "seeder" CONSTRAINT "seeder_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
+Access method: heap
 
-3. **kyc_submissions**
-   - kyc_id (Primary Key)
-   - user_id (Foreign Key -> users.user_id)
-   - document_type (e.g., ID Card, Passport)
-   - document_path
-   - status (Pending, Approved, Rejected)
-   - submitted_at
-   - reviewed_by (Foreign Key -> admin.admin_id, Nullable)
-   - reviewed_at
 
-4. **sessions**
-   - session_id (Primary Key)
-   - user_id (Foreign Key -> users.user_id)
-   - token
-   - created_at
-   - expires_at
+kvp_blockchain=# \d+ mirror;
+                                                                  Table "public.mirror"
+   Column    |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Desc
+ription
+-------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+-----
+--------
+ id          | integer                  |           | not null | nextval('mirror_id_seq'::regclass) | plain    |             |              |
+ cloud_id    | integer                  |           |          |                                    | plain    |             |              |
+ mirror_path | character varying(255)   |           | not null |                                    | extended |             |              |
+ created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              |
+Indexes:
+    "mirror_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "mirror_cloud_id_fkey" FOREIGN KEY (cloud_id) REFERENCES cloud(id) ON DELETE CASCADE
+Access method: heap
 
----
 
-## **3. Reward Pool and Mining**
-### Tujuan:
-- Mengelola pool reward untuk mining dan GameFi.
-- Mendukung pengelolaan reward secara otomatis.
+kvp_blockchain=# \d+ seeder;
+                                                                  Table "public.seeder"
+   Column   |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Descr
+iption
+------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+------
+-------
+ id         | integer                  |           | not null | nextval('seeder_id_seq'::regclass) | plain    |             |              |
+ user_id    | integer                  |           |          |                                    | plain    |             |              |
+ file_id    | integer                  |           |          |                                    | plain    |             |              |
+ status     | character varying(50)    |           |          | 'active'::character varying        | extended |             |              |
+ created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              |
+Indexes:
+    "seeder_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "seeder_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
+    "seeder_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+Access method: heap
 
-### Tabel:
-1. **reward_pools**
-   - pool_id (Primary Key)
-   - pool_name
-   - total_tokens (DECIMAL)
-   - allocated_tokens (DECIMAL)
-   - created_at
-   - updated_at
 
-2. **mining_rewards**
-   - reward_id (Primary Key)
-   - miner_wallet (wallet_address)
-   - block_id (Foreign Key -> blocks.id)
-   - amount (DECIMAL)
-   - created_at
+kvp_blockchain=# \d+ peer;
+                                                                  Table "public.peer"
+   Column   |           Type           | Collation | Nullable |             Default              | Storage  | Compression | Stats target | Descrip
+tion
+------------+--------------------------+-----------+----------+----------------------------------+----------+-------------+--------------+--------
+-----
+ id         | integer                  |           | not null | nextval('peer_id_seq'::regclass) | plain    |             |              |
+ user_id    | integer                  |           |          |                                  | plain    |             |              |
+ file_id    | integer                  |           |          |                                  | plain    |             |              |
+ status     | character varying(50)    |           |          | 'active'::character varying      | extended |             |              |
+ created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                | plain    |             |              |
+Indexes:
+    "peer_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "peer_file_id_fkey" FOREIGN KEY (file_id) REFERENCES cloud(id)
+    "peer_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+Triggers:
+    peer_status_update AFTER UPDATE ON peer FOR EACH ROW EXECUTE FUNCTION update_peer_status()
+Access method: heap
 
-3. **pool_allocations**
-   - allocation_id (Primary Key)
-   - pool_id (Foreign Key -> reward_pools.pool_id)
-   - recipient_wallet (wallet_address)
-   - allocation_type (e.g., Game, Staking, Mining)
-   - amount (DECIMAL)
-   - allocated_at
 
----
+kvp_blockchain=# \d+ channel;
+                                                                   Table "public.channel"
+    Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | De
+scription
+--------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+---
+----------
+ id           | integer                  |           | not null | nextval('channel_id_seq'::regclass) | plain    |             |              |
+ user_id      | integer                  |           |          |                                     | plain    |             |              |
+ access_point | character varying(255)   |           | not null |                                     | extended |             |              |
+ created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              |
+Indexes:
+    "channel_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "channel_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+Access method: heap
 
-## **4. GameFi (Earn-to-Play)**
-### Tujuan:
-- Mendukung game berbasis blockchain.
-- Memberikan reward kepada pemain.
 
-### Tabel:
-1. **games**
-   - game_id (Primary Key)
-   - name
-   - description
-   - developer_wallet (wallet_address)
-   - revenue_share (DECIMAL)
-   - created_at
-   - updated_at
+kvp_blockchain=# \d+ dns;
+                                                                  Table "public.dns"
+   Column    |           Type           | Collation | Nullable |             Default             | Storage  | Compression | Stats target | Descrip
+tion
+-------------+--------------------------+-----------+----------+---------------------------------+----------+-------------+--------------+--------
+-----
+ id          | integer                  |           | not null | nextval('dns_id_seq'::regclass) | plain    |             |              |
+ domain_name | character varying(255)   |           | not null |                                 | extended |             |              |
+ ip_address  | character varying(45)    |           |          |                                 | extended |             |              |
+ created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP               | plain    |             |              |
+Indexes:
+    "dns_pkey" PRIMARY KEY, btree (id)
+Access method: heap
 
-2. **game_sessions**
-   - session_id (Primary Key)
-   - game_id (Foreign Key -> games.game_id)
-   - player_wallet (wallet_address)
-   - session_start
-   - session_end
-   - status
-   - rewards_earned (DECIMAL)
 
-3. **game_rewards**
-   - reward_id (Primary Key)
-   - game_id (Foreign Key -> games.game_id)
-   - player_wallet (wallet_address)
-   - reward_type (Token, NFT, Bonus)
-   - reward_value (DECIMAL or metadata ID)
-   - created_at
+kvp_blockchain=# \d+ bandwidth;
+                                                                    Table "public.bandwidth"
+     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target
+| Description
+-----------------+--------------------------+-----------+----------+---------------------------------------+---------+-------------+--------------
++-------------
+ id              | integer                  |           | not null | nextval('bandwidth_id_seq'::regclass) | plain   |             |
+|
+ user_id         | integer                  |           |          |                                       | plain   |             |
+|
+ bandwidth_limit | integer                  |           | not null |                                       | plain   |             |
+|
+ usage           | integer                  |           | not null |                                       | plain   |             |
+|
+ created_at      | timestamp with time zone |           |          | CURRENT_TIMESTAMP                     | plain   |             |
+|
+Indexes:
+    "bandwidth_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "bandwidth_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+Triggers:
+    update_bandwidth_usage_trigger AFTER INSERT ON bandwidth FOR EACH ROW EXECUTE FUNCTION update_bandwidth_usage()
+Access method: heap
 
-4. **leaderboards**
-   - leaderboard_id (Primary Key)
-   - game_id (Foreign Key -> games.game_id)
-   - player_wallet (wallet_address)
-   - score
-   - rank
-   - updated_at
 
----
+kvp_blockchain=# \d+ gateway;
+                                                                  Table "public.gateway"
+   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Des
+cription
+-------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+----
+---------
+ id          | integer                  |           | not null | nextval('gateway_id_seq'::regclass) | plain    |             |              |
+ user_id     | integer                  |           |          |                                     | plain    |             |              |
+ share_point | character varying(255)   |           | not null |                                     | extended |             |              |
+ created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              |
+Indexes:
+    "gateway_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "gateway_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+Triggers:
+    update_gateway_share_trigger AFTER INSERT ON gateway FOR EACH ROW EXECUTE FUNCTION update_gateway_share()
+Access method: heap
 
-## **5. NFT and Marketplace**
-### Tujuan:
-- Mendukung marketplace untuk transaksi NFT.
-- Mengintegrasikan NFT dengan GameFi dan DeFi.
 
-### Tabel:
-1. **nfts**
-   - nft_id (Primary Key)
-   - owner_wallet (wallet_address)
-   - game_id (Foreign Key -> games.game_id, Nullable)
-   - metadata (JSONB)
-   - created_at
+kvp_blockchain=# \d+ __diesel_schema_migrations;
+                                               Table "public.__diesel_schema_migrations"
+ Column  |            Type             | Collation | Nullable |      Default      | Storage  | Compression | Stats target | Description
+---------+-----------------------------+-----------+----------+-------------------+----------+-------------+--------------+-------------
+ version | character varying(50)       |           | not null |                   | extended |             |              |
+ run_on  | timestamp without time zone |           | not null | CURRENT_TIMESTAMP | plain    |             |              |
+Indexes:
+    "__diesel_schema_migrations_pkey" PRIMARY KEY, btree (version)
+Access method: heap
 
-2. **marketplace**
-   - listing_id (Primary Key)
-   - nft_id (Foreign Key -> nfts.nft_id)
-   - seller_wallet (wallet_address)
-   - buyer_wallet (wallet_address, Nullable)
-   - price (DECIMAL)
-   - status
-   - created_at
+kvp_blockchain=# \df
+                                                      List of functions
+ Schema |           Name           | Result data type |                      Argument data types                      | Type
+--------+--------------------------+------------------+---------------------------------------------------------------+------
+ public | add_peer                 | void             | user_id integer, file_id integer                              | func
+ public | add_reward_to_pool       | void             | p_user_id integer, p_pool_id integer, p_reward_amount numeric | func
+ public | admin_approve_kyc        | void             | user_id integer, approval_status character varying            | func
+ public | deduct_reward_from_pool  | void             | p_user_id integer, p_pool_id integer, p_reward_amount numeric | func
+ public | diesel_manage_updated_at | void             | _tbl regclass                                                 | func
+ public | diesel_set_updated_at    | trigger          |                                                               | func
+ public | submit_kyc               | void             | user_id integer                                               | func
+ public | update_bandwidth_usage   | trigger          |                                                               | func
+ public | update_block_stats       | trigger          |                                                               | func
+ public | update_gateway_share     | trigger          |                                                               | func
+ public | update_peer_status       | trigger          |                                                               | func
+ public | verify_kyc_automatically | trigger          |                                                               | func
+ public | verify_kyc_automatically | void             | user_id integer                                               | func
+(13 rows)
 
----
 
-## **6. Governance (DAO)**
-### Tujuan:
-- Memberikan kekuatan voting kepada komunitas.
-- Mengelola pengambilan keputusan secara transparan.
+kvp_blockchain=# \dy
+              List of event triggers
+ Name | Event | Owner | Enabled | Function | Tags
+------+-------+-------+---------+----------+------
+(0 rows)
 
-### Tabel:
-1. **proposals**
-   - proposal_id (Primary Key)
-   - title
-   - description
-   - creator_wallet (wallet_address)
-   - status
-   - created_at
-   - updated_at
+kvp_blockchain=# \di
+                                     List of relations
+ Schema |               Name                | Type  |  Owner   |           Table
+--------+-----------------------------------+-------+----------+----------------------------
+ public | __diesel_schema_migrations_pkey   | index | postgres | __diesel_schema_migrations
+ public | admin_email_key                   | index | postgres | admin
+ public | admin_pkey                        | index | postgres | admin
+ public | admin_username_key                | index | postgres | admin
+ public | bandwidth_pkey                    | index | postgres | bandwidth
+ public | blocks_block_hash_key             | index | postgres | blocks
+ public | blocks_pkey                       | index | postgres | blocks
+ public | channel_pkey                      | index | postgres | channel
+ public | cloud_pkey                        | index | postgres | cloud
+ public | dns_pkey                          | index | postgres | dns
+ public | game_rewards_pkey                 | index | postgres | game_rewards
+ public | game_sessions_pkey                | index | postgres | game_sessions
+ public | games_pkey                        | index | postgres | games
+ public | gateway_pkey                      | index | postgres | gateway
+ public | idx_block_id                      | index | postgres | transactions
+ public | idx_user_id                       | index | postgres | transactions
+ public | kyc_approvals_pkey                | index | postgres | kyc_approvals
+ public | kyc_submissions_pkey              | index | postgres | kyc_submissions
+ public | marketplace_pkey                  | index | postgres | marketplace
+ public | mining_rewards_pkey               | index | postgres | mining_rewards
+ public | mirror_pkey                       | index | postgres | mirror
+ public | nfts_pkey                         | index | postgres | nfts
+ public | peer_pkey                         | index | postgres | peer
+ public | pool_allocations_pkey             | index | postgres | pool_allocations
+ public | proposals_pkey                    | index | postgres | proposals
+ public | reward_pools_pkey                 | index | postgres | reward_pools
+ public | seeder_pkey                       | index | postgres | seeder
+ public | sessions_pkey                     | index | postgres | sessions
+ public | tracker_pkey                      | index | postgres | tracker
+ public | transactions_pkey                 | index | postgres | transactions
+ public | transactions_transaction_hash_key | index | postgres | transactions
+ public | user_registrations_pkey           | index | postgres | user_registrations
+ public | users_email_key                   | index | postgres | users
+ public | users_pkey                        | index | postgres | users
+ public | users_username_key                | index | postgres | users
+ public | votes_pkey                        | index | postgres | votes
+(36 rows)
 
-2. **votes**
-   - vote_id (Primary Key)
-   - proposal_id (Foreign Key -> proposals.proposal_id)
-   - voter_wallet (wallet_address)
-   - vote_option (Yes, No, Abstain)
-   - timestamp
+kvp_blockchain=# \di
+                                     List of relations
+ Schema |               Name                | Type  |  Owner   |           Table
+--------+-----------------------------------+-------+----------+----------------------------
+ public | __diesel_schema_migrations_pkey   | index | postgres | __diesel_schema_migrations
+ public | admin_email_key                   | index | postgres | admin
+ public | admin_pkey                        | index | postgres | admin
+ public | admin_username_key                | index | postgres | admin
+ public | bandwidth_pkey                    | index | postgres | bandwidth
+ public | blocks_block_hash_key             | index | postgres | blocks
+ public | blocks_pkey                       | index | postgres | blocks
+ public | channel_pkey                      | index | postgres | channel
+ public | cloud_pkey                        | index | postgres | cloud
+ public | dns_pkey                          | index | postgres | dns
+ public | game_rewards_pkey                 | index | postgres | game_rewards
+ public | game_sessions_pkey                | index | postgres | game_sessions
+ public | games_pkey                        | index | postgres | games
+ public | gateway_pkey                      | index | postgres | gateway
+ public | idx_block_id                      | index | postgres | transactions
+ public | idx_user_id                       | index | postgres | transactions
+ public | kyc_approvals_pkey                | index | postgres | kyc_approvals
+ public | kyc_submissions_pkey              | index | postgres | kyc_submissions
+ public | marketplace_pkey                  | index | postgres | marketplace
+ public | mining_rewards_pkey               | index | postgres | mining_rewards
+ public | mirror_pkey                       | index | postgres | mirror
+ public | nfts_pkey                         | index | postgres | nfts
+ public | peer_pkey                         | index | postgres | peer
+ public | pool_allocations_pkey             | index | postgres | pool_allocations
+ public | proposals_pkey                    | index | postgres | proposals
+ public | reward_pools_pkey                 | index | postgres | reward_pools
+ public | seeder_pkey                       | index | postgres | seeder
+ public | sessions_pkey                     | index | postgres | sessions
+ public | tracker_pkey                      | index | postgres | tracker
+ public | transactions_pkey                 | index | postgres | transactions
+ public | transactions_transaction_hash_key | index | postgres | transactions
+ public | user_registrations_pkey           | index | postgres | user_registrations
+ public | users_email_key                   | index | postgres | users
+ public | users_pkey                        | index | postgres | users
+ public | users_username_key                | index | postgres | users
+ public | votes_pkey                        | index | postgres | votes
+(36 rows)
 
----
 
-## **Rencana Fondasi Database**
-Berdasarkan struktur besar ini, kita akan membangun **fondasi database** dalam langkah-langkah berikut:
+kvp_blockchain=# \dn
+      List of schemas
+  Name  |       Owner
+--------+-------------------
+ public | pg_database_owner
+(1 row)
 
-### **1. Fondasi Core Blockchain**
-- Tabel: `blocks`, `transactions`.
-
-### **2. Fondasi User Management**
-- Tabel: `admin`, `users`, `kyc_submissions`, `sessions`.
-
-### **3. Fondasi Reward Pool**
-- Tabel: `reward_pools`, `mining_rewards`.
-
-### **4. Fondasi GameFi**
-- Tabel: `games`, `game_sessions`, `game_rewards`.
-
-### **5. Fondasi NFT Marketplace**
-- Tabel: `nfts`, `marketplace`.
-
-### **6. Fondasi DAO**
-- Tabel: `proposals`, `votes`.
-
----
-
-## **Langkah Selanjutnya** - (Question on 26 Nov 2024) -
-1. **Diskusi dan Validasi**:
-   - Apakah struktur ini mencakup semua kebutuhan sistem KVP?
-   - Apakah ada fitur tambahan yang perlu dipertimbangkan?
-
-2. **Implementasi Bertahap**:
-   - Pilih modul yang ingin diimplementasikan lebih dulu.
-   - Mulai dari fondasi (Blockchain + User Management).
-
-3. **Integrasi dan Pengujian**:
-   - Pastikan semua modul bekerja secara terintegrasi.
-   - Uji setiap fitur dengan skenario pengguna.
+## **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**
+src/ 
+├── blockchain/  ✅
+│ ├── mod.rs ✅
+│ ├── block.rs ✅
+│ └── transaction.rs ✅
+├── auth/ ✅
+│ ├── mod.rs ✅
+│ ├── admin.rs✅ 
+│ ├── user.rs ✅
+│ └── session.rs✅ 
+├── kyc/ ✅
+│ ├── mod.rs ✅
+│ └── kyc_approval.rs ✅
+│ └── kyc_submission.rs ✅
+├── dao/ ✅
+│ ├── mod.rs ✅
+│ ├── vote.rs ✅
+│ └── proposal.rs ✅
+├── utility/ ✅
+│ └── defi.rs ✅
+│ └── gamefi.rs✅ 
+│ └── nft.rs ✅
+│ └── marketplace.rs ✅
+│ └── storage/✅
+│ │  └──cloud.rs✅
+│ │  └──mirror.rs✅
+│ │  └──peer.rs✅
+│ │  └──seeder.rs✅
+│ │  └──tracker.rs✅
+│ └── kvpnet/✅
+│ │  └──bandwith.rs✅
+│ │  └──channel.rs✅
+│ │  └──dns.rs✅
+│ │  └──gateway.rs✅
+├── mining/ ✅
+│ └── mining.rs✅ 
+├── pool/ ✅
+│ └── pool.rs ✅
+├── middleware/ 
+│ └── middleware.rs // Opsional
+├── db/ ✅
+│ └── mod.rs ✅
+│ └── connection.rs ✅
+└── main.rs✅

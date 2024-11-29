@@ -5,7 +5,9 @@ This document outlines the database structure for the KVP Blockchain project, co
 ## **DATA POSTGRESQL kvp_blockchain**
 kvp_blockchain=# -- Menampilkan struktur tabel tertentu
 kvp_blockchain=# \d+ transactions;
+
                                                                             Table "public.transactions"
+                                                                            
 |      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compression | Stats target | Description |
 |------------------|-----------------------------|-----------|----------|------------------------------------------------------|----------|-------------|--------------|-------------|
 | transaction_id   | integer                     |           | not null | nextval('transactions_transaction_id_seq'::regclass) | plain    |      |              | |
@@ -28,6 +30,7 @@ Indexes:
     "transactions_transaction_hash_key" UNIQUE CONSTRAINT, btree (transaction_hash)
     
 Foreign-key constraints:
+
     "fk_block_id" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
     "fk_receiver" FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE
     "fk_receiver_id" FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE SET NULL
@@ -40,7 +43,9 @@ Access method: heap
 
 
 kvp_blockchain=# \d+ admin;
+
                                                                         Table "public.admin"
+                                                                        
 |    Column     |            Type             | Collation | Nullable |                 Default                 | Storage  | Compression | Stats target | Description |
 |---------------|-----------------------------|-----------|----------|-----------------------------------------|----------|-------------|--------------|-------------|
 | admin_id      | integer                     |           | not null | nextval('admin_admin_id_seq'::regclass) | plain    |             |    | |
@@ -51,12 +56,16 @@ kvp_blockchain=# \d+ admin;
 | created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                       | plain    |             |    | |
 
 Indexes:
+
     "admin_pkey" PRIMARY KEY, btree (admin_id)
     "admin_email_key" UNIQUE CONSTRAINT, btree (email)
     "admin_username_key" UNIQUE CONSTRAINT, btree (username)
+    
 Referenced by:
+
     TABLE "kyc_submissions" CONSTRAINT "fk_reviewed_by_admin" FOREIGN KEY (reviewed_by) REFERENCES admin(admin_id) ON DELETE SET NULL
     TABLE "kyc_approvals" CONSTRAINT "kyc_approvals_admin_id_fkey" FOREIGN KEY (admin_id) REFERENCES admin(admin_id)
+    
 Access method: heap
 
 

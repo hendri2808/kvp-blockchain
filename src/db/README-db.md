@@ -6,10 +6,8 @@ This document outlines the database structure for the KVP Blockchain project, co
 kvp_blockchain=# -- Menampilkan struktur tabel tertentu
 kvp_blockchain=# \d+ transactions;
                                                                             Table "public.transactions"
-      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compres
-sion | Stats target | Description
-------------------+-----------------------------+-----------+----------+------------------------------------------------------+----------+--------
------+--------------+-------------
+      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compression | Stats target | Description
+------------------+-----------------------------+-----------+----------+------------------------------------------------------+----------+-------------+--------------+-------------
  transaction_id   | integer                     |           | not null | nextval('transactions_transaction_id_seq'::regclass) | plain    |
      |              |
  transaction_hash | text                        |           | not null |                                                      | extended |
@@ -50,10 +48,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ admin;
                                                                         Table "public.admin"
-    Column     |            Type             | Collation | Nullable |                 Default                 | Storage  | Compression | Stats tar
-get | Description
----------------+-----------------------------+-----------+----------+-----------------------------------------+----------+-------------+----------
-----+-------------
+    Column     |            Type             | Collation | Nullable |                 Default                 | Storage  | Compression | Stats target | Description
+---------------+-----------------------------+-----------+----------+-----------------------------------------+----------+-------------+--------------+-------------
  admin_id      | integer                     |           | not null | nextval('admin_admin_id_seq'::regclass) | plain    |             |
     |
  username      | character varying(50)       |           | not null |                                         | extended |             |
@@ -78,10 +74,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ blocks;
                                                                           Table "public.blocks"
-      Column       |            Type             | Collation | Nullable |                 Default                  | Storage  | Compression | Stat
-s target | Description
--------------------+-----------------------------+-----------+----------+------------------------------------------+----------+-------------+-----
----------+-------------
+      Column       |            Type             | Collation | Nullable |                 Default                  | Storage  | Compression | Stats target | Description
+-------------------+-----------------------------+-----------+----------+------------------------------------------+----------+-------------+--------------+-------------
  block_id          | integer                     |           | not null | nextval('blocks_block_id_seq'::regclass) | plain    |             |
          |
  block_hash        | text                        |           | not null |                                          | extended |             |
@@ -138,10 +132,8 @@ LINE 1: acker;
         ^
 kvp_blockchain=# \d+ cloud;
                                                                   Table "public.cloud"
-   Column   |           Type           | Collation | Nullable |              Default              | Storage  | Compression | Stats target | Descri
-ption
-------------+--------------------------+-----------+----------+-----------------------------------+----------+-------------+--------------+-------
-------
+   Column   |           Type           | Collation | Nullable |              Default              | Storage  | Compression | Stats target | Description
+------------+--------------------------+-----------+----------+-----------------------------------+----------+-------------+--------------+-------------
  id         | integer                  |           | not null | nextval('cloud_id_seq'::regclass) | plain    |             |              |
  file_path  | character varying(255)   |           | not null |                                   | extended |             |              |
  size       | bigint                   |           | not null |                                   | plain    |             |              |
@@ -159,10 +151,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ mirror;
                                                                   Table "public.mirror"
-   Column    |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Desc
-ription
--------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+-----
---------
+   Column    |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Description
+-------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+-------------
  id          | integer                  |           | not null | nextval('mirror_id_seq'::regclass) | plain    |             |              |
  cloud_id    | integer                  |           |          |                                    | plain    |             |              |
  mirror_path | character varying(255)   |           | not null |                                    | extended |             |              |
@@ -176,10 +166,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ seeder;
                                                                   Table "public.seeder"
-   Column   |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Descr
-iption
-------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+------
--------
+   Column   |           Type           | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Description
+------------+--------------------------+-----------+----------+------------------------------------+----------+-------------+--------------+-------------
  id         | integer                  |           | not null | nextval('seeder_id_seq'::regclass) | plain    |             |              |
  user_id    | integer                  |           |          |                                    | plain    |             |              |
  file_id    | integer                  |           |          |                                    | plain    |             |              |
@@ -195,10 +183,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ peer;
                                                                   Table "public.peer"
-   Column   |           Type           | Collation | Nullable |             Default              | Storage  | Compression | Stats target | Descrip
-tion
-------------+--------------------------+-----------+----------+----------------------------------+----------+-------------+--------------+--------
------
+   Column   |           Type           | Collation | Nullable |             Default              | Storage  | Compression | Stats target | Description
+------------+--------------------------+-----------+----------+----------------------------------+----------+-------------+--------------+-------------
  id         | integer                  |           | not null | nextval('peer_id_seq'::regclass) | plain    |             |              |
  user_id    | integer                  |           |          |                                  | plain    |             |              |
  file_id    | integer                  |           |          |                                  | plain    |             |              |
@@ -216,10 +202,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ channel;
                                                                    Table "public.channel"
-    Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | De
-scription
---------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+---
-----------
+    Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description
+--------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+-------------
  id           | integer                  |           | not null | nextval('channel_id_seq'::regclass) | plain    |             |              |
  user_id      | integer                  |           |          |                                     | plain    |             |              |
  access_point | character varying(255)   |           | not null |                                     | extended |             |              |
@@ -233,10 +217,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ dns;
                                                                   Table "public.dns"
-   Column    |           Type           | Collation | Nullable |             Default             | Storage  | Compression | Stats target | Descrip
-tion
--------------+--------------------------+-----------+----------+---------------------------------+----------+-------------+--------------+--------
------
+   Column    |           Type           | Collation | Nullable |             Default             | Storage  | Compression | Stats target | Description
+-------------+--------------------------+-----------+----------+---------------------------------+----------+-------------+--------------+-------------
  id          | integer                  |           | not null | nextval('dns_id_seq'::regclass) | plain    |             |              |
  domain_name | character varying(255)   |           | not null |                                 | extended |             |              |
  ip_address  | character varying(45)    |           |          |                                 | extended |             |              |
@@ -248,10 +230,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ bandwidth;
                                                                     Table "public.bandwidth"
-     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target
-| Description
------------------+--------------------------+-----------+----------+---------------------------------------+---------+-------------+--------------
-+-------------
+     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target | Description
+-----------------+--------------------------+-----------+----------+---------------------------------------+---------+-------------+--------------+-------------
  id              | integer                  |           | not null | nextval('bandwidth_id_seq'::regclass) | plain   |             |
 |
  user_id         | integer                  |           |          |                                       | plain   |             |
@@ -273,10 +253,8 @@ Access method: heap
 
 kvp_blockchain=# \d+ gateway;
                                                                   Table "public.gateway"
-   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Des
-cription
--------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+----
----------
+   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description
+-------------+--------------------------+-----------+----------+-------------------------------------+----------+-------------+--------------+-------------
  id          | integer                  |           | not null | nextval('gateway_id_seq'::regclass) | plain    |             |              |
  user_id     | integer                  |           |          |                                     | plain    |             |              |
  share_point | character varying(255)   |           | not null |                                     | extended |             |              |

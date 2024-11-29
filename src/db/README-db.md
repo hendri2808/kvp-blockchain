@@ -2,9 +2,9 @@ This document outlines the database structure for the KVP Blockchain project, co
 
 ---
 
-## **DATA POSTGRESQL kvp_blockchain**
-kvp_blockchain=# -- Menampilkan struktur tabel tertentu
-kvp_blockchain=# \d+ transactions;
+### **DATA POSTGRESQL kvp_blockchain**
+## kvp_blockchain=# -- Menampilkan struktur tabel tertentu
+# kvp_blockchain=# \d+ transactions;
                                                                             Table "public.transactions"
                                                                             
 |      Column      |            Type             | Collation | Nullable |                       Default                        | Storage  | Compression | Stats target | Description |
@@ -41,7 +41,7 @@ Foreign-key constraints:
 Access method: heap
 
 
-kvp_blockchain=# \d+ admin;
+# kvp_blockchain=# \d+ admin;
 
                                                                         Table "public.admin"
                                                                         
@@ -68,7 +68,7 @@ Referenced by:
 Access method: heap
 
 
-kvp_blockchain=# \d+ blocks;
+# kvp_blockchain=# \d+ blocks;
 
                                                                           Table "public.blocks"
                                                                           
@@ -112,7 +112,7 @@ Triggers:
 Access method: heap
 
 
-kvp_blockchain=# \d+ cloud;
+# kvp_blockchain=# \d+ cloud;
 
                                                                   Table "public.cloud"
                                                                   
@@ -138,7 +138,7 @@ Referenced by:
 Access method: heap
 
 
-kvp_blockchain=# \d+ mirror;
+# kvp_blockchain=# \d+ mirror;
 
                                                                   Table "public.mirror"
                                                                   
@@ -160,7 +160,7 @@ Foreign-key constraints:
 Access method: heap
 
 
-kvp_blockchain=# \d+ seeder;
+# kvp_blockchain=# \d+ seeder;
 
                                                                   Table "public.seeder"
                                                                   
@@ -184,7 +184,7 @@ Foreign-key constraints:
 Access method: heap
 
 
-kvp_blockchain=# \d+ peer;
+# kvp_blockchain=# \d+ peer;
 
                                                                   Table "public.peer"
                                                                   
@@ -212,7 +212,7 @@ Triggers:
 Access method: heap
 
 
-kvp_blockchain=# \d+ channel;
+# kvp_blockchain=# \d+ channel;
 
                                                                    Table "public.channel"
                                                                    
@@ -234,7 +234,7 @@ Foreign-key constraints:
 Access method: heap
 
 
-kvp_blockchain=# \d+ dns;
+# kvp_blockchain=# \d+ dns;
 
                                                                   Table "public.dns"
                                                                   
@@ -252,7 +252,7 @@ Indexes:
 Access method: heap
 
 
-kvp_blockchain=# \d+ bandwidth;
+# kvp_blockchain=# \d+ bandwidth;
 
                                                                     Table "public.bandwidth"
                                                                     
@@ -279,7 +279,7 @@ Triggers:
 Access method: heap
 
 
-kvp_blockchain=# \d+ gateway;
+# kvp_blockchain=# \d+ gateway;
 
                                                                   Table "public.gateway"
                                                                   
@@ -305,7 +305,7 @@ Triggers:
 Access method: heap
 
 
-kvp_blockchain=# \d+ __diesel_schema_migrations;
+# kvp_blockchain=# \d+ __diesel_schema_migrations;
 
                                                Table "public.__diesel_schema_migrations"
                                                
@@ -320,7 +320,7 @@ Indexes:
     
 Access method: heap
 
-kvp_blockchain=# \df
+# kvp_blockchain=# \df
 
                                                       List of functions
                                                       
@@ -343,7 +343,7 @@ kvp_blockchain=# \df
 (13 rows)
 
 
-kvp_blockchain=# \dy
+# kvp_blockchain=# \dy
 
               List of event triggers
               
@@ -353,7 +353,7 @@ kvp_blockchain=# \dy
 
 (0 rows)
 
-kvp_blockchain=# \di
+# kvp_blockchain=# \di
 
                                      List of relations
                                      
@@ -398,7 +398,7 @@ kvp_blockchain=# \di
 
 (36 rows)
 
-kvp_blockchain=# \di
+# kvp_blockchain=# \di
 
                                      List of relations
                                      
@@ -444,7 +444,7 @@ kvp_blockchain=# \di
 (36 rows)
 
 
-kvp_blockchain=# \dn
+# kvp_blockchain=# \dn
 
       List of schemas
       
@@ -456,7 +456,7 @@ kvp_blockchain=# \dn
 
 ---
 
-## **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**
+### **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**
 
 src/ 
 

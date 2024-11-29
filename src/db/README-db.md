@@ -150,9 +150,13 @@ kvp_blockchain=# \d+ mirror;
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              | |
 
 Indexes:
+
     "mirror_pkey" PRIMARY KEY, btree (id)
+    
 Foreign-key constraints:
+
     "mirror_cloud_id_fkey" FOREIGN KEY (cloud_id) REFERENCES cloud(id) ON DELETE CASCADE
+    
 Access method: heap
 
 

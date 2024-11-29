@@ -21,10 +21,12 @@ kvp_blockchain=# \d+ transactions;
 | receiver_id      | integer                     |           |          |                                                      | plain    |     |              | |
 
 Indexes:
+
     "transactions_pkey" PRIMARY KEY, btree (transaction_id)
     "idx_block_id" btree (block_id)
     "idx_user_id" btree (user_id)
     "transactions_transaction_hash_key" UNIQUE CONSTRAINT, btree (transaction_hash)
+    
 Foreign-key constraints:
     "fk_block_id" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
     "fk_receiver" FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE
@@ -33,6 +35,7 @@ Foreign-key constraints:
     "fk_sender_id" FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE SET NULL
     "fk_user_id" FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
     "transactions_block_id_fkey" FOREIGN KEY (block_id) REFERENCES blocks(block_id) ON DELETE CASCADE
+    
 Access method: heap
 
 

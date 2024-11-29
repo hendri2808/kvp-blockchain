@@ -455,89 +455,89 @@ kvp_blockchain=# \dn
 ## **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**
 
 src/ 
-|
+
 ├── blockchain/  
-| |
+
 │ ├── mod.rs 
-| |
+
 │ ├── block.rs 
-| |
+
 │ └── transaction.rs 
-|
+
 ├── auth/ 
-| |
+
 │ ├── mod.rs 
-| |
+
 │ ├── admin.rs
-| |
+
 │ ├── user.rs 
-| |
+
 │ └── session.rs
-|
+
 ├── kyc/ 
-| |
+
 │ ├── mod.rs 
-| |
+
 │ ├── kyc_approval.rs 
-| |
+
 │ └── kyc_submission.rs 
-|
+
 ├── dao/ 
-| |
+
 │ ├── mod.rs 
-| |
+
 │ ├── vote.rs 
-| |
+
 │ └── proposal.rs 
-|
+
 ├── utility/ 
-| |
+
 │ ├──defi.rs 
-| |
+
 │ ├── gamefi.rs
-| |
+
 │ ├── nft.rs 
-| |
+
 │ ├── marketplace.rs 
-| |
+
 │ ├── storage/
-| |  |
+
 │ │  ├── cloud.rs
-| |  |
+
 │ │  ├── mirror.rs
-| |  |
+
 │ │  ├── peer.rs
-| |  |
+
 │ │  ├── seeder.rs
-| |  |
+
 │ │  └── tracker.rs
-| |
+
 │ ├── kvpnet/
-| |  |
+
 │ │  ├── bandwith.rs
-| |  |
+
 │ │  ├── channel.rs
-| |  |
+
 │ │  ├── dns.rs
-| |  |
+
 │ │  └── gateway.rs
-| |
+
 ├── mining/ 
-| |
+
 │ └── mining.rs
-|
+
 ├── pool/ 
-| |
+
 │ └── pool.rs 
-|
+
 ├── middleware/ 
-| |
+
 │ └── middleware.rs // Opsional
-|
+
 ├── db/ 
-| |
+
 │ ├── mod.rs 
-| |
+
 │ └── connection.rs 
-|
+
 └── main.rs

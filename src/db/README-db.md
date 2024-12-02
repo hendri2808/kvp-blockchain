@@ -357,15 +357,15 @@ Access method: heap
 ### kvp_blockchain=# \d+ game_sessions;
                                                                          Table "public.game_sessions"
 																		 
-     Column     |            Type             | Collation | Nullable |                      Default                      | Storage  | Compression | Stats target | Description
-----------------+-----------------------------+-----------+----------+---------------------------------------------------+----------+-------------+--------------+-------------
- session_id     | integer                     |           | not null | nextval('game_sessions_session_id_seq'::regclass) | plain    |             |              |
- game_id        | integer                     |           |          |                                                   | plain    |             |              |
- player_wallet  | text                        |           | not null |                                                   | extended |             |              |
- session_start  | timestamp without time zone |           | not null |                                                   | plain    |             |              |
- session_end    | timestamp without time zone |           |          |                                                   | plain    |             |              |
- status         | character varying(20)       |           |          | 'Active'::character varying                       | extended |             |              |
- rewards_earned | numeric(20,8)               |           |          | 0                                                 | main     |             |              |
+|     Column     |            Type             | Collation | Nullable |                      Default                      | Storage  | Compression | Stats target | Description |
+|----------------|-----------------------------|-----------|----------|---------------------------------------------------|----------|-------------|--------------|-------------|
+| session_id     | integer                     |           | not null | nextval('game_sessions_session_id_seq'::regclass) | plain    |             |              |		|
+| game_id        | integer                     |           |          |                                                   | plain    |             |              |		|
+| player_wallet  | text                        |           | not null |                                                   | extended |             |              |		|
+| session_start  | timestamp without time zone |           | not null |                                                   | plain    |             |              |		|
+| session_end    | timestamp without time zone |           |          |                                                   | plain    |             |              |		|
+| status         | character varying(20)       |           |          | 'Active'::character varying                       | extended |             |              |		|
+| rewards_earned | numeric(20,8)               |           |          | 0                                                 | main     |             |              |		|
 ```
 Indexes:
 
@@ -382,13 +382,13 @@ Access method: heap
 ### kvp_blockchain=# \d+ games;
                                                                          Table "public.games"
 																		 
-      Column      |            Type             | Collation | Nullable |                Default                 | Storage  | Compression | Stats target | Description
-------------------+-----------------------------+-----------+----------+----------------------------------------+----------+-------------+--------------+-------------
- game_id          | integer                     |           | not null | nextval('games_game_id_seq'::regclass) | plain |             |              |
- name             | character varying(100)      |           |          |                                        | extended |             |              |
- developer_wallet | character varying(100)      |           |          |                                        | extended |             |              |
- revenue_share    | numeric(20,8)               |           |          |                                        | main |             |              |
- created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP                      | plain |             |              |
+|      Column      |            Type             | Collation | Nullable |                Default                 | Storage  | Compression | Stats target | Description |
+|------------------|-----------------------------|-----------|----------|----------------------------------------|----------|-------------|--------------|-------------|
+| game_id          | integer                     |           | not null | nextval('games_game_id_seq'::regclass) | plain    |             |              | |
+| name             | character varying(100)      |           |          |                                        | extended |             |              | |
+| developer_wallet | character varying(100)      |           |          |                                        | extended |             |              | |
+| revenue_share    | numeric(20,8)               |           |          |                                        | main |             |              | |
+| created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP                      | plain |             |              | |
 ```
 Indexes:
 

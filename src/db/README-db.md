@@ -333,14 +333,14 @@ Access method: heap
 ### kvp_blockchain=# \d+ game_rewards;
                                                                         Table "public.game_rewards"
 																		
-    Column     |            Type             | Collation | Nullable |                     Default                     | Storage  | Compression | Stats target | Description
----------------+-----------------------------+-----------+----------+-------------------------------------------------+----------+-------------+--------------+-------------
- reward_id     | integer                     |           | not null | nextval('game_rewards_reward_id_seq'::regclass) | plain    |             |              |
- game_id       | integer                     |           |          |                                                 | plain    |             |              |
- player_wallet | text                        |           | not null |                                                 | extended |             |              |
- reward_type   | character varying(50)       |           | not null |                                                 | extended |             |              |
- reward_value  | numeric(20,8)               |           | not null |                                                 | main     |             |              |
- created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                               | plain    |             |              |
+|    Column     |            Type             | Collation | Nullable |                     Default                     | Storage  | Compression | Stats target | Description |
+|---------------|-----------------------------|-----------|----------|-------------------------------------------------|----------|-------------|--------------|-------------|
+| reward_id     | integer                     |           | not null | nextval('game_rewards_reward_id_seq'::regclass) | plain    |             |              | |
+| game_id       | integer                     |           |          |                                                 | plain    |             |              | |
+| player_wallet | text                        |           | not null |                                                 | extended |             |              | |
+| reward_type   | character varying(50)       |           | not null |                                                 | extended |             |              | |
+| reward_value  | numeric(20,8)               |           | not null |                                                 | main     |             |              | |
+| created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                               | plain    |             |              | |
 ```
 Indexes:
 

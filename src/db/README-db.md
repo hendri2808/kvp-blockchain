@@ -193,15 +193,15 @@ Access method: heap
 ### kvp_blockchain=# \d+ sessions;
                                                                         Table "public.sessions"
 																		
-   Column    |            Type             | Collation | Nullable |                   Default                    | Storage  | Compression | Stats target | Description
--------------+-----------------------------+-----------+----------+----------------------------------------------+----------+-------------+--------------+-------------
- session_id  | integer                     |           | not null | nextval('sessions_session_id_seq'::regclass) | plain    |             |              |
- user_id     | integer                     |           |          |                                              | plain    |             |              |
- token       | text                        |           | not null |                                              | extended |             |              |
- ip_address  | character varying(45)       |           |          |                                              | extended |             |              |
- device_info | text                        |           |          |                                              | extended |             |              |
- login_time  | timestamp without time zone |           |          | CURRENT_TIMESTAMP                            | plain    |             |              |
- logout_time | timestamp without time zone |           |          |                                              | plain    |             |              |
+|   Column    |            Type             | Collation | Nullable |                   Default                    | Storage  | Compression | Stats target | Description |
+|-------------|-----------------------------|-----------|----------|----------------------------------------------|----------|-------------|--------------|-------------|
+| session_id  | integer                     |           | not null | nextval('sessions_session_id_seq'::regclass) | plain    |             |              | |
+| user_id     | integer                     |           |          |                                              | plain    |             |              | |
+| token       | text                        |           | not null |                                              | extended |             |              | |
+| ip_address  | character varying(45)       |           |          |                                              | extended |             |              | |
+| device_info | text                        |           |          |                                              | extended |             |              | |
+| login_time  | timestamp without time zone |           |          | CURRENT_TIMESTAMP                            | plain    |             |              | |
+| logout_time | timestamp without time zone |           |          |                                              | plain    |             |              | |
 ```
 Indexes:
 

@@ -7,7 +7,6 @@ This document outlines the database structure for the KVP Blockchain project, co
 ## 1. kvp_blockchain=# -- Main Table
 
 ### kvp_blockchain=# \d+ blocks;
-```
                                                                           Table "public.blocks"
                                                                           
 |      Column       |            Type             | Collation | Nullable |                 Default                  | Storage  | Compression | Stats target | Description |
@@ -31,7 +30,7 @@ This document outlines the database structure for the KVP Blockchain project, co
 | last_burn_time    | timestamp without time zone |           |          |                                          | plain    |             |         		| 			  |
 | burned            | boolean                     |           |          | false                                    | plain    |             |         		| 			  |
 | burned_block_ids  | text[]                      |           |          |                                          | extended |             |         		| 			  |
-
+```
 Indexes:
 
     "blocks_pkey" PRIMARY KEY, btree (block_id)
@@ -51,7 +50,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ transactions;
-```
                                                                             Table "public.transactions"
 																			
 |      Column      |            Type             | Collation | Nullable |                       Default      				   | Storage  | Compression | Stats target | Description |
@@ -67,7 +65,7 @@ Access method: heap
 | user_id          | integer                     |           |          |												       | plain    |             |              |			 |
 | sender_id        | integer                     |           |          |												       | plain    |             |              |			 |
 | receiver_id      | integer                     |           |          |												       | plain    |             |              |			 |
-
+```
 Indexes:
 
     "transactions_pkey" PRIMARY KEY, btree (transaction_id)
@@ -89,7 +87,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ admin;
-```
                                                                         Table "public.admin"
 																		
 |    Column     |            Type             | Collation | Nullable |                 Default                 | Storage  | Compression | Stats target | Description |
@@ -100,7 +97,7 @@ Access method: heap
 | email         | character varying(100)      |           | not null |                                         | extended |             |              |			 |
 | role          | character varying(20)       |           |          | 'admin'::character varying              | extended |             |              |			 |
 | created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                       | plain    |             |              |			 |
-
+```
 Indexes:
 
     "admin_pkey" PRIMARY KEY, btree (admin_id)
@@ -116,7 +113,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ user_registrations;
-```
                                                                             Table "public.user_registrations"
 																			
 |     Column      |            Type             | Collation | Nullable |                           Default				             | Storage  | Compression | Stats target | Description |
@@ -126,7 +122,7 @@ Access method: heap
 | ip_address      | character varying(45)       |           |          |													         | extended |             |              |			   |
 | device_info     | text                        |           |          |													         | extended |             |              |			   |
 | timestamp       | timestamp without time zone |           |          | CURRENT_TIMESTAMP								             | plain    |             |              |			   |
-
+```
 Indexes:
 
     "user_registrations_pkey" PRIMARY KEY, btree (registration_id)
@@ -140,7 +136,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# kvp_blockchain=# \d+ users
-```
                                                                          Table "public.users"
 																		 
 |      Column       |            Type             | Collation | Nullable |                Default                 | Storage  | Compression | Stats target | Description |
@@ -157,7 +152,7 @@ Access method: heap
 | created_at        | timestamp without time zone |           |          | CURRENT_TIMESTAMP                      | plain  	 |             |              |				|
 | additional_data   | jsonb                       |           |          |                                        | extended |             |              |				|
 | updated_at        | timestamp without time zone |           | not null | CURRENT_TIMESTAMP                      | plain  	 |             |              |				|
-
+```
 Indexes:
 
     "users_pkey" PRIMARY KEY, btree (user_id)
@@ -196,7 +191,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ sessions;
-```
                                                                         Table "public.sessions"
 																		
    Column    |            Type             | Collation | Nullable |                   Default                    | Storage  | Compression | Stats target | Description
@@ -208,7 +202,7 @@ Access method: heap
  device_info | text                        |           |          |                                              | extended |             |              |
  login_time  | timestamp without time zone |           |          | CURRENT_TIMESTAMP                            | plain    |             |              |
  logout_time | timestamp without time zone |           |          |                                              | plain    |             |              |
-
+```
 Indexes:
 
     "sessions_pkey" PRIMARY KEY, btree (session_id)
@@ -222,7 +216,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ kyc_submissions;
-```
                                                                        Table "public.kyc_submissions"
 																	   
 |    Column     |            Type             | Collation | Nullable |                     Default                     |Storage   | Compression | Stats target | Description |
@@ -236,7 +229,7 @@ Access method: heap
 | reviewed_by   | integer                     |           |          |                                                 |plain     |             |              |			 |
 | updated_at    | timestamp without time zone |           |          |                                                 |plain     |             |              |			 |
 | created_at    | timestamp without time zone |           |          | now()                                           |plain     |             |              |			 |
-
+```
 Indexes:
     
 	"kyc_submissions_pkey" PRIMARY KEY, btree (kyc_id)
@@ -259,7 +252,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ mining_rewards;
-```
                                                                         Table "public.mining_rewards"
 																		
 |    Column    |            Type             | Collation | Nullable |                      Default                      | Storage  | Compression | Stats target | Description |
@@ -273,7 +265,7 @@ Access method: heap
 | device_type  | character varying(50)       |           | not null |                                                   | extended |             |              |			  |
 | reward       | double precision            |           | not null |                                                   | plain    |             |              |			  |
 | user_id      | integer                     |           |          |                                                   | plain    |             |              |			  |
-
+```
 Indexes:
 
     "mining_rewards_pkey" PRIMARY KEY, btree (reward_id)
@@ -288,7 +280,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ pool_allocations;
-```
                                                                       Table "public.pool_allocations"
 																	  
 |      Column      |            Type             | Collation | Nullable |                   Default                    | Storage | Compression | Stats target | Description |
@@ -301,7 +292,7 @@ Access method: heap
 | timestamp        | timestamp without time zone |           |          | now()                                        | plain   |             |              |				|
 | total_reward     | numeric                     |           |          | 0                                            | main    |             |              |				|
 | reward_amount    | numeric                     |           |          | 0                                            | main    |             |              |				|
-
+```
 Indexes:
 
     "pool_allocations_pkey" PRIMARY KEY, btree (id)
@@ -314,9 +305,8 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### kvp_blockchain=# \d+ reward_pools;
-```                                                                         
-																		 Table "public.reward_pools"
+### kvp_blockchain=# \d+ reward_pools;                                                                         
+										Table "public.reward_pools"
 																		 
 |      Column      |            Type             | Collation | Nullable |                    Default                    | Storage  | Compression | Stats target | Description |
 |------------------|-----------------------------|-----------|----------|-----------------------------------------------|----------|-------------|--------------|-------------|
@@ -325,7 +315,7 @@ Access method: heap
 | total_tokens     | numeric(20,8)               |           |          | 0                                             | main     |             |              |			  |
 | allocated_tokens | numeric(20,8)               |           |          | 0                                             | main     |             |              |			  |
 | created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP                             | plain    |             |              |			  |
-
+```
 Indexes:
 
     "reward_pools_pkey" PRIMARY KEY, btree (pool_id)
@@ -341,7 +331,6 @@ Access method: heap
 ## 2. kvp_blockchain=# -- Utilities Table
 
 ### kvp_blockchain=# \d+ game_rewards;
-```
                                                                         Table "public.game_rewards"
 																		
     Column     |            Type             | Collation | Nullable |                     Default                     | Storage  | Compression | Stats target | Description
@@ -352,7 +341,7 @@ Access method: heap
  reward_type   | character varying(50)       |           | not null |                                                 | extended |             |              |
  reward_value  | numeric(20,8)               |           | not null |                                                 | main     |             |              |
  created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                               | plain    |             |              |
-
+```
 Indexes:
 
     "game_rewards_pkey" PRIMARY KEY, btree (reward_id)
@@ -366,7 +355,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ game_sessions;
-```
                                                                          Table "public.game_sessions"
 																		 
      Column     |            Type             | Collation | Nullable |                      Default                      | Storage  | Compression | Stats target | Description
@@ -378,7 +366,7 @@ Access method: heap
  session_end    | timestamp without time zone |           |          |                                                   | plain    |             |              |
  status         | character varying(20)       |           |          | 'Active'::character varying                       | extended |             |              |
  rewards_earned | numeric(20,8)               |           |          | 0                                                 | main     |             |              |
-
+```
 Indexes:
 
     "game_sessions_pkey" PRIMARY KEY, btree (session_id)
@@ -392,7 +380,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ games;
-```
                                                                          Table "public.games"
 																		 
       Column      |            Type             | Collation | Nullable |                Default                 | Storage  | Compression | Stats target | Description
@@ -402,7 +389,7 @@ Access method: heap
  developer_wallet | character varying(100)      |           |          |                                        | extended |             |              |
  revenue_share    | numeric(20,8)               |           |          |                                        | main |             |              |
  created_at       | timestamp without time zone |           |          | CURRENT_TIMESTAMP                      | plain |             |              |
-
+```
 Indexes:
 
     "games_pkey" PRIMARY KEY, btree (game_id)
@@ -419,7 +406,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ marketplace;
-```
                                                                          Table "public.marketplace"
 																		 
 |    Column     |            Type             | Collation | Nullable |                     Default                     | Storage  | Compression | Stats target | Description |
@@ -431,7 +417,7 @@ Access method: heap
 | price         | numeric(20,8)               |           | not null |                                                 | main     |             |              |			 |
 | status        | character varying(20)       |           |          | 'Available'::character varying                  | extended |             |              |			 |
 | created_at    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                               | plain    |             |              |			 |
-
+```
 Indexes:
 
     "marketplace_pkey" PRIMARY KEY, btree (listing_id)
@@ -445,7 +431,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ nfts;
-```
                                                                       Table "public.nfts"
 																	  
 |    Column    |            Type             | Collation | Nullable |               Default                | Storage  | Compression | Stats target | Description |
@@ -455,7 +440,7 @@ Access method: heap
 | metadata     | jsonb                       |           | not null |                                      | extended | 	 	    |              |			 |
 | game_id      | integer                     |           |          |                                      | plain    |     	    |              |			 |
 | created_at   | timestamp without time zone |           |          | CURRENT_TIMESTAMP                    | plain    |    	        |              |			 |
-
+```
 Indexes:
 
     "nfts_pkey" PRIMARY KEY, btree (nft_id)
@@ -473,7 +458,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ bandwidth;
-```
                                                                     Table "public.bandwidth"
 																	
 |     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target | Description |
@@ -483,7 +467,7 @@ Access method: heap
 | bandwidth_limit | integer                  |           | not null |                                       | plain   |             |              |			 |
 | usage           | integer                  |           | not null |                                       | plain   |             |              |			 |
 | created_at      | timestamp with time zone |           |          | CURRENT_TIMESTAMP                     | plain   |             |              |			 |
-
+```
 Indexes:
 
     "bandwidth_pkey" PRIMARY KEY, btree (id)
@@ -500,7 +484,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ cloud;
-```
                                                                   Table "public.cloud"
 																  
                                                                   
@@ -512,7 +495,7 @@ Access method: heap
 | status     | character varying(50)    |           |          | 'active'::character varying       | extended |             |              | 			 |
 | created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                 | plain    |             |              | 			 |
 | updated_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                 | plain    |             |              | 			 |
-
+```
 Indexes:
 
     "cloud_pkey" PRIMARY KEY, btree (id)
@@ -527,7 +510,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ mirror;
-```
                                                                   Table "public.mirror"
 																  
                                                                   
@@ -537,7 +519,7 @@ Access method: heap
 | cloud_id    | integer                  |           |          |                                    | plain    |             |              | 			   |
 | mirror_path | character varying(255)   |           | not null |                                    | extended |             |              | 			   |
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              | 			   |
-
+```
 Indexes:
 
     "mirror_pkey" PRIMARY KEY, btree (id)
@@ -550,7 +532,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ seeder;
-```
                                                                   Table "public.seeder"
 																  
                                                                   
@@ -561,7 +542,7 @@ Access method: heap
 | file_id    | integer                  |           |          |                                    | plain    |             |              | 			      |
 | status     | character varying(50)    |           |          | 'active'::character varying        | extended |             |              | 		    	  |
 | created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                  | plain    |             |              | 			      |
-
+```
 Indexes:
 
     "seeder_pkey" PRIMARY KEY, btree (id)
@@ -575,7 +556,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ peer;
-```
                                                                   Table "public.peer"
 																  
                                                                   
@@ -586,7 +566,7 @@ Access method: heap
 | file_id    | integer                  |           |          |                                  | plain    |             |              | 			|
 | status     | character varying(50)    |           |          | 'active'::character varying      | extended |             |              | 			|
 | created_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP                | plain    |             |              | 			|
-
+```
 Indexes:
 
     "peer_pkey" PRIMARY KEY, btree (id)
@@ -604,7 +584,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ tracker;
-```
                                                                   Table "public.tracker"
 																  
 |   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description |
@@ -614,7 +593,7 @@ Access method: heap
 | tracker_url | character varying(255)   |           | not null |                                     | extended |		       |              |				|
 | status      | character varying(50)    |           |          | 'active'::character varying         | extended |		       |              |				|
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |		       |              |				|
-
+```
 Indexes:
  
    "tracker_pkey" PRIMARY KEY, btree (id)
@@ -623,7 +602,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ channel;
-```
                                                                    Table "public.channel"
 																   
                                                                    
@@ -633,7 +611,7 @@ Access method: heap
 | user_id      | integer                  |           |          |                                     | plain    |             |              | 			 |
 | access_point | character varying(255)   |           | not null |                                     | extended |             |              | 			 |
 | created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              | 			 |
-
+```
 Indexes:
 
     "channel_pkey" PRIMARY KEY, btree (id)
@@ -646,7 +624,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ dns;
-```
                                                                   Table "public.dns"
 																  
                                                                   
@@ -656,7 +633,7 @@ Access method: heap
 | domain_name | character varying(255)   |           | not null |                                 | extended |             |              | 			|
 | ip_address  | character varying(45)    |           |          |                                 | extended |             |              | 			|
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP               | plain    |             |              | 			|
-
+```
 Indexes:
 
     "dns_pkey" PRIMARY KEY, btree (id)
@@ -665,7 +642,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ bandwidth;
-```
                                                                     Table "public.bandwidth"
                                                                     
 |     Column      |           Type           | Collation | Nullable |                Default                | Storage | Compression | Stats target | Description |
@@ -675,7 +651,7 @@ Access method: heap
 | bandwidth_limit | integer                  |           | not null |                                       | plain   |             | 			   | 			 |
 | usage           | integer                  |           | not null |                                       | plain   |             | 			   | 			 |	
 | created_at      | timestamp with time zone |           |          | CURRENT_TIMESTAMP                     | plain   |             | 			   | 			 |
-
+```
 Indexes:
 
     "bandwidth_pkey" PRIMARY KEY, btree (id)
@@ -692,7 +668,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ gateway;
-```
                                                                   Table "public.gateway"
                                                                   
 |   Column    |           Type           | Collation | Nullable |               Default               | Storage  | Compression | Stats target | Description |
@@ -701,7 +676,7 @@ Access method: heap
 | user_id     | integer                  |           |          |                                     | plain    |             |              | 			|
 | share_point | character varying(255)   |           | not null |                                     | extended |             |              | 			|
 | created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP                   | plain    |             |              | 			|
-
+```
 Indexes:
 
     "gateway_pkey" PRIMARY KEY, btree (id)
@@ -718,7 +693,6 @@ Access method: heap
 ```
 
 ### kvp_blockchain=# \d+ proposals;
-```
                                                                           Table "public.proposals"
 																		  
 |     Column     |            Type             | Collation | Nullable |                    Default                     | Storage  | Compression | Stats target | Description |
@@ -730,7 +704,7 @@ Access method: heap
 | status         | character varying(20)       |           |          | 'Open'::character varying                      | extended |             |              |			 |
 | created_at     | timestamp without time zone |           |          | CURRENT_TIMESTAMP                              | plain    |             |              |			 |
 | updated_at     | timestamp without time zone |           |          |                                                | plain    |             |              |			 |
-
+```
 Indexes:
 
     "proposals_pkey" PRIMARY KEY, btree (proposal_id)
@@ -746,14 +720,13 @@ Access method: heap
 ## 3. kvp_blockchain=# -- Migration Table
 
 ### kvp_blockchain=# \d+ __diesel_schema_migrations;
-```
                                                Table "public.__diesel_schema_migrations"
                                                
 | Column  |            Type             | Collation | Nullable |      Default      | Storage  | Compression | Stats target | Description |
 |---------|-----------------------------|-----------|----------|-------------------|----------|-------------|--------------|-------------|
 | version | character varying(50)       |           | not null |                   | extended |             |              | 			 |
 | run_on  | timestamp without time zone |           | not null | CURRENT_TIMESTAMP | plain    |             |              | 			 |
-
+```
 Indexes:
 
     "__diesel_schema_migrations_pkey" PRIMARY KEY, btree (version)

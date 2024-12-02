@@ -743,7 +743,7 @@ Foreign-key constraints:
     "votes_proposal_id_fkey" FOREIGN KEY (proposal_id) REFERENCES proposals(proposal_id) ON DELETE CASCADE
 
 Access method: heap
-'''
+```
 
 ---
 

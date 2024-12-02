@@ -745,25 +745,6 @@ Foreign-key constraints:
 Access method: heap
 '''
 
-## 3. kvp_blockchain=# -- Migration Table
-
-### kvp_blockchain=# \d+ __diesel_schema_migrations;
-                                               Table "public.__diesel_schema_migrations"
-
-                                               
-| Column  |            Type             | Collation | Nullable |      Default      | Storage  | Compression | Stats target | Description |
-|---------|-----------------------------|-----------|----------|-------------------|----------|-------------|--------------|-------------|
-| version | character varying(50)       |           | not null |                   | extended |             |              | 			 |
-| run_on  | timestamp without time zone |           | not null | CURRENT_TIMESTAMP | plain    |             |              | 			 |
-
-```
-Indexes:
-
-    "__diesel_schema_migrations_pkey" PRIMARY KEY, btree (version)
-    
-Access method: heap
-```
-
 ---
 
 # **Penyesuaian Struktur Tabel Menurut PostgreSQL 28 Nov 2024**

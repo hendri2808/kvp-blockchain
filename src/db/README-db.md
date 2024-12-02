@@ -748,7 +748,6 @@ Access method: heap
 ## 3. kvp_blockchain=# -- Migration Table
 
 ### kvp_blockchain=# \d+ __diesel_schema_migrations;
-
                                                Table "public.__diesel_schema_migrations"
 
                                                

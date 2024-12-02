@@ -717,6 +717,34 @@ Referenced by:
 Access method: heap
 ```
 
+### kvp_blockchain-# kvp_blockchain=# \d+ votes
+                                                                       Table "public.votes"
+								       
+|    Column    |            Type             | Collation | Nullable |                Default                 | Storage  | Compression | Stats target | Description |
+|--------------|-----------------------------|-----------|----------|----------------------------------------|----------|-------------|--------------|-------------|
+| vote_id      | integer                     |           | not null | nextval('votes_vote_id_seq'::regclass) | plain    |           |              | |
+| proposal_id  | integer                     |           |          |                                        | plain    |           |              | |
+| voter_wallet | text                        |           | not null |                                        | extended |           |              | |
+| vote_option  | character varying(20)       |           | not null |                                        | extended |           |              | |
+| timestamp    | timestamp without time zone |           |          | CURRENT_TIMESTAMP                      | plain    |           |              | |
+ 
+```
+Indexes:
+
+    "votes_pkey" PRIMARY KEY, btree (vote_id)
+
+Check constraints:
+
+    "votes_vote_option_check" CHECK (vote_option::text = ANY (ARRAY['Yes'::character varying, 'No'::character varying, 'Abstain'::character varying]::text[]))
+
+Foreign-key constraints:
+
+    "fk_proposal_id" FOREIGN KEY (proposal_id) REFERENCES proposals(proposal_id) ON DELETE CASCADE
+    "votes_proposal_id_fkey" FOREIGN KEY (proposal_id) REFERENCES proposals(proposal_id) ON DELETE CASCADE
+
+Access method: heap
+'''
+
 ## 3. kvp_blockchain=# -- Migration Table
 
 ### kvp_blockchain=# \d+ __diesel_schema_migrations;
